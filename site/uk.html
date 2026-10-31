@@ -1,0 +1,1207 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Women Owned Tattoo Shops in the UK | Women in INK</title>
+<meta name="description" content="Find a women owned tattoo shop near you. 23 shops in the UK (England, Scotland, Wales and Northern Ireland), with their flash, flash days and how to book.">
+<link rel="canonical" href="https://womeninink.com/uk.html">
+<meta property="og:title" content="Women in INK: a map of women who tattoo">
+<meta property="og:description" content="Find a women owned tattoo shop near you, see their flash and book your next tattoo.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://womeninink.com/uk.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+<style>
+:root {
+  --purple: #443473;
+  --ink: #17131B;
+  --paper: #F7F2EC;
+  --mauve: #B79AAF;
+  --rose: #D8B9BC;
+  --sage: #AAB3A0;
+  --line: rgba(23, 19, 27, 0.14);
+  --soft: rgba(23, 19, 27, 0.66);
+  --serif: "Didot", "Bodoni Moda", "Bodoni 72", serif;
+  --sans: "Avenir Next", "Avenir", "Inter", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.07 0 0 0 0 0.11 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+a { color: var(--purple); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 2px;
+}
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
+.site-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0 10px;
+}
+.lockup { text-decoration: none; color: var(--purple); }
+.lockup .name { font-family: var(--serif); font-size: 26px; font-weight: 700; letter-spacing: 0.01em; }
+.lockup .tag { display: block; font-size: 13px; color: var(--soft); margin-top: -2px; }
+.site-head nav a { font-size: 14px; color: var(--ink); margin-left: 12px; }
+h1 {
+  font-family: var(--serif);
+  font-weight: 700;
+  color: var(--purple);
+  font-size: clamp(36px, 6.4vw, 76px);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  margin: 18px 0 14px;
+  max-width: 12ch;
+}
+.lede { max-width: 58ch; font-size: 17px; margin: 0 0 26px; }
+footer { border-top: 1px solid var(--line); margin-top: 48px; padding: 22px 0 40px; font-size: 14px; color: var(--soft); }
+footer p { max-width: 70ch; margin: 0 0 8px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+
+.layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
+@media (min-width: 920px) {
+  .layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: start; }
+  .map-col { position: sticky; top: 16px; order: 2; }
+  .list-col { order: 1; }
+  #map { height: calc(100vh - 32px); max-height: 820px; }
+}
+#map { width: 100%; height: 46vh; min-height: 300px; border: 1px solid var(--line); border-radius: 4px; background: #ece6dd; }
+.pin { width: 14px; height: 14px; border-radius: 50%; background: var(--purple); border: 2px solid var(--paper); box-shadow: 0 0 0 1px var(--purple); cursor: pointer; }
+.pin.on { width: 20px; height: 20px; background: var(--ink); }
+.maplibregl-popup-content { font-family: var(--sans); font-size: 14px; border-radius: 4px; padding: 10px 12px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; margin-bottom: 8px; }
+.chip {
+  font: inherit; font-size: 14px; padding: 6px 12px; border-radius: 999px;
+  border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer;
+}
+.chip[aria-pressed="true"] { background: var(--purple); border-color: var(--purple); color: var(--paper); }
+.search { font: inherit; font-size: 15px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 4px; background: rgba(255,255,255,0.5); width: 100%; margin: 4px 0 8px; }
+.toggles { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; margin-bottom: 6px; }
+.toggles label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.count { font-size: 14px; color: var(--soft); margin: 4px 0 6px; }
+.shops { list-style: none; margin: 0; padding: 0; }
+.shop { border-top: 1px solid var(--line); padding: 20px 0 18px; scroll-margin-top: 16px; }
+.shop.on { background: linear-gradient(90deg, rgba(68,52,115,0.07), transparent 70%); }
+.shop h2 { font-family: var(--serif); font-size: 27px; line-height: 1.1; margin: 0; color: var(--ink); font-weight: 700; }
+.shop h2 button { all: unset; cursor: pointer; }
+.shop h2 button:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+.place { font-size: 14px; color: var(--soft); margin: 2px 0 10px; }
+blockquote { margin: 0 0 6px; font-family: var(--serif); font-style: italic; font-size: 21px; line-height: 1.3; color: var(--purple); }
+.source { font-size: 13px; color: var(--soft); margin: 0 0 12px; }
+.tagline { font-size: 14px; margin: 2px 0 8px; display: flex; flex-wrap: wrap; gap: 2px 0; }
+.tagline > * + *::before { content: ". "; }
+.tagline > *:last-child::after { content: "."; }
+.tagline a { color: var(--purple); font-weight: 600; text-decoration: none; }
+.tagline a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.specs { list-style: none; padding: 0; margin: 0 0 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+.specs li { font-size: 12px; padding: 2px 9px; border-radius: 999px; background: rgba(170, 179, 160, 0.35); color: var(--ink); }
+.specfilter { margin: 0 0 10px; display: grid; gap: 6px; }
+.specrow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.specfilter .lbl { font-size: 13px; color: var(--soft); margin-right: 4px; min-width: 96px; }
+.more-styles { font: inherit; font-size: 13px; background: none; border: 0; color: var(--purple); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 4px 2px; }
+#all-styles { display: grid; gap: 6px; }
+#all-styles[hidden] { display: none; }
+.spechint { font-size: 13px; color: var(--soft); margin: 2px 0 0; min-height: 1.4em; }
+.spec { font: inherit; font-size: 13px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; }
+.spec[aria-pressed="true"] { background: var(--sage); border-color: var(--sage); color: var(--ink); font-weight: 600; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.btn {
+  font: inherit; font-size: 14px; font-weight: 500; text-decoration: none; padding: 7px 14px; border-radius: 4px;
+  border: 1px solid var(--purple); color: var(--purple); background: transparent; cursor: pointer;
+}
+.btn.solid { background: var(--purple); color: var(--paper); }
+.owner { font-size: 13px; margin-top: 4px; }
+.owner summary { cursor: pointer; color: var(--soft); width: fit-content; }
+.owner[open] summary { color: var(--ink); font-weight: 500; }
+.owner-note { margin: 6px 0; color: var(--soft); }
+.owner-btns { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.verify { font-size: 13px; background: rgba(68, 52, 115, 0.07); border-left: 3px solid var(--purple); padding: 8px 10px; }
+.owner button { all: unset; cursor: pointer; color: var(--soft); text-decoration: underline; text-underline-offset: 3px; }
+.owner button:focus-visible { outline: 2px solid var(--purple); }
+.tag { display: inline-block; font-size: 12px; padding: 2px 8px; border-radius: 999px; background: rgba(170,179,160,0.35); margin-right: 6px; }
+.empty { padding: 24px 0; }
+dialog { border: 1px solid var(--line); border-radius: 6px; padding: 22px; max-width: 460px; width: calc(100% - 32px); background: var(--paper); color: var(--ink); }
+dialog::backdrop { background: rgba(23,19,27,0.45); }
+dialog h3 { font-family: var(--serif); font-size: 26px; margin: 0 0 6px; color: var(--purple); }
+dialog p { margin: 0 0 12px; font-size: 15px; }
+dialog label { display: block; font-size: 14px; font-weight: 500; margin: 10px 0 4px; }
+dialog input, dialog textarea { width: 100%; font: inherit; font-size: 15px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+dialog textarea { min-height: 90px; }
+.row { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
+.hp { position: absolute; left: -9999px; }
+.done { font-size: 15px; }
+.week { border: 1px solid var(--purple); border-radius: 6px; padding: 16px 16px 6px; margin: 0 0 24px; background: rgba(247,242,236,0.7); }
+.week h2 { font-family: var(--serif); color: var(--purple); font-size: 30px; margin: 0 0 2px; }
+.week .sub { font-size: 14px; color: var(--soft); margin: 0 0 12px; }
+.week ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.week li { border-top: 1px solid var(--line); padding: 10px 0; }
+.week .when { font-weight: 600; font-size: 15px; }
+.week .who { font-family: var(--serif); font-size: 20px; line-height: 1.15; }
+.week .who button { all: unset; cursor: pointer; }
+.week .what { font-size: 14px; margin: 2px 0 6px; }
+.week-none { font-size: 14px; color: var(--soft); margin: 0 0 20px; }
+.fdays { border-left: 3px solid var(--mauve); padding: 4px 0 4px 12px; margin: 0 0 12px; }
+.fdays h3 { font-size: 13px; font-weight: 600; margin: 0 0 4px; color: var(--purple); }
+.fday { font-size: 14px; margin: 0 0 6px; }
+.fday .when { font-weight: 600; }
+.fday a { margin-right: 10px; }
+.pin.fd { background: var(--mauve); box-shadow: 0 0 0 1px var(--purple), 0 0 0 5px rgba(183,154,175,0.45); }
+.legend { font-size: 13px; color: var(--soft); margin: 8px 0 0; display: flex; gap: 16px; flex-wrap: wrap; }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; background: var(--purple); }
+.legend .lfd::before { background: var(--mauve); box-shadow: 0 0 0 1px var(--purple); }
+.badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--rose); color: var(--ink); margin-right: 6px; vertical-align: 1px; }
+.benefit { font-size: 14px; }
+.dist { font-size: 13px; color: var(--soft); margin-left: 6px; font-weight: 400; }
+.near { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 14px; margin: 0 0 10px; }
+.near select { font: inherit; font-size: 14px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+.near .why { color: var(--soft); font-size: 13px; }
+.mom { font-size: 14px; margin: 0 0 10px; }
+.mom q { font-family: var(--serif); font-style: italic; color: var(--purple); }
+.regions { display: flex; gap: 6px; margin: 10px 0 0; }
+.regions a { font-size: 14px; font-weight: 500; padding: 6px 14px; border: 1px solid var(--purple); border-radius: 999px; text-decoration: none; color: var(--purple); }
+.regions a[aria-current="page"] { background: var(--purple); color: var(--paper); }
+.addshop { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; border: 1px dashed var(--purple); border-radius: 6px; padding: 12px 14px; margin: 18px 0 0; font-size: 15px; }
+.addshop strong { font-family: var(--serif); font-size: 20px; color: var(--purple); }
+.soon { border-top: 1px solid var(--line); margin-top: 36px; padding-top: 22px; max-width: 760px; }
+.soon h2 { font-family: var(--serif); color: var(--purple); font-size: 32px; margin: 0 0 4px; }
+.soon .kick { font-size: 14px; color: var(--soft); margin: 0 0 10px; }
+.signup { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 4px 0 12px; }
+.signup input { font: inherit; font-size: 15px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 4px; background: #fff; min-width: 220px; flex: 1; }
+blockquote a.q { color: inherit; text-decoration: none; }
+blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
+.dropdowns { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; position: relative; }
+.dd { position: static; }
+.dd summary { list-style: none; cursor: pointer; display: inline-flex; gap: 8px; align-items: center; font-size: 14px; padding: 7px 12px; border: 1px solid var(--line); border-radius: 4px; background: #fff; min-width: 150px; }
+.dd summary::-webkit-details-marker { display: none; }
+.dd summary::after { content: ""; margin-left: auto; border: 5px solid transparent; border-top-color: var(--soft); transform: translateY(3px); }
+.dd[open] summary { border-color: var(--purple); }
+.dd-name { color: var(--soft); }
+.dd-val { font-weight: 600; color: var(--ink); max-width: 16ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dd-panel { position: absolute; z-index: 20; top: calc(100% + 4px); left: 0; width: min(340px, 100%); max-height: 60vh; overflow: auto; background: #fff; border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 8px 24px rgba(23, 19, 27, 0.12); padding: 8px 12px 10px; }
+.dd-opt { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; padding: 5px 0; cursor: pointer; }
+.dd-opt input { margin-top: 3px; accent-color: var(--purple); }
+.dd-opt small { display: block; font-size: 12px; color: var(--soft); }
+.dd-group { font-size: 12px; font-weight: 600; color: var(--purple); margin: 8px 0 2px; }
+.dd-clear { font: inherit; font-size: 13px; background: none; border: 0; color: var(--purple); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 6px 0 0; }
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "name": "Women owned tattoo shops in the UK (England, Scotland, Wales and Northern Ireland)", "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "TattooParlor", "name": "Foxglove and Fern Studio", "address": {"@type": "PostalAddress", "addressLocality": "Accrington", "addressRegion": "England", "addressCountry": "GB"}, "sameAs": ["https://www.instagram.com/foxgloveandfernstudio/"]}}, {"@type": "ListItem", "position": 2, "item": {"@type": "TattooParlor", "name": "Secret Society Tattoo Collective", "address": {"@type": "PostalAddress", "addressLocality": "Anstey", "addressRegion": "England", "addressCountry": "GB"}, "url": "https://www.thesecretsocietycollective.com/", "sameAs": ["https://www.instagram.com/secret_society_leics"]}}, {"@type": "ListItem", "position": 3, "item": {"@type": "TattooParlor", "name": "Outliers Ink", "address": {"@type": "PostalAddress", "addressLocality": "Birmingham", "addressRegion": "England", "addressCountry": "GB"}, "url": "https://outliers.ink", "sameAs": ["https://www.instagram.com/outliers_ink"]}}, {"@type": "ListItem", "position": 4, "item": {"@type": "TattooParlor", "name": "Studio Baby", "address": {"@type": "PostalAddress", "addressLocality": "Brighton", "addressRegion": "England", "addressCountry": "GB"}, "url": "https://www.studiobabybrighton.com", "sameAs": ["https://www.instagram.com/studio___baby/"]}}, {"@type": "ListItem", "position": 5, "item": {"@type": "TattooParlor", "name": "The Dollhouse", "address": {"@type": "PostalAddress", "addressLocality": "Brighton", "addressRegion": "England", "addressCountry": "GB"}, "url": "https://www.thedollhousetattoo.com", "sameAs": ["https://www.instagram.com/thedollhousebtn"]}}, {"@type": "ListItem", "position": 6, "item": {"@type": "TattooParlor", "name": "Black Sheep Tattoo", "address": {"@type": "PostalAddress", "addressLocality": "Bristol", "addressRegion": "England", "addressCountry": "GB"}, "url": "https://www.blacksheepbristol.com", "sameAs": ["https://www.instagram.com/blacksheepbristol/"]}}, {"@type": "ListItem", "position": 7, "item": {"@type": "TattooParlor", "name": "Envision Ink", "address": {"@type": "PostalAddress", "addressLocality": "Bristol", "addressRegion": "England", "addressCountry": "GB"}, "url": "https://www.envisionink.co.uk", "sameAs": ["https://www.instagram.com/envision_ink_/"]}}, {"@type": "ListItem", "position": 8, "item": {"@type": "TattooParlor", "name": "Forever Bound Tattoo", "address": {"@type": "PostalAddress", "addressLocality": "Bristol", "addressRegion": "England", "addressCountry": "GB"}, "url": "https://www.foreverboundtattoostudio.co.uk", "sameAs": ["https://www.instagram.com/foreverboundtattoo/"]}}, {"@type": "ListItem", "position": 9, "item": {"@type": "TattooParlor", "name": "Fox and Dagger Studios", "address": {"@type": "PostalAddress", "addressLocality": "Cirencester", "addressRegion": "England", "addressCountry": "GB"}}}, {"@type": "ListItem", "position": 10, "item": {"@type": "TattooParlor", "name": "Gilded Leopard Tattoo", "address": {"@type": "PostalAddress", "addressLocality": "Leeds", "addressRegion": "England", "addressCountry": "GB"}, "url": "https://www.gildedleopardtattoo.co.uk"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "TattooParlor", "name": "The Aviary", "address": {"@type": "PostalAddress", "addressLocality": "Leeds", "addressRegion": "England", "addressCountry": "GB"}, "url": "https://www.theaviary.studio/"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "TattooParlor", "name": "Hellcat Tattoo", "address": {"@type": "PostalAddress", "addressLocality": "Liverpool", "addressRegion": "England", "addressCountry": "GB"}, "url": "https://www.hellcattattoo.co.uk/", "sameAs": ["https://www.instagram.com/hellcattattoostudio/"]}}, {"@type": "ListItem", "position": 13, "item": {"@type": "TattooParlor", "name": "Deity Tattoo London", "address": {"@type": "PostalAddress", "addressLocality": "London", "addressRegion": "England", "addressCountry": "GB"}, "url": "https://www.deitytattoo.com/", "sameAs": ["https://www.instagram.com/deitytattoo/"]}}, {"@type": "ListItem", "position": 14, "item": {"@type": "TattooParlor", "name": "Latex Heart Tattoo", "address": {"@type": "PostalAddress", "addressLocality": "London", "addressRegion": "England", "addressCountry": "GB"}, "url": "https://latexhearttattoo.com", "sameAs": ["https://www.instagram.com/latexhearttattoo/"]}}, {"@type": "ListItem", "position": 15, "item": {"@type": "TattooParlor", "name": "OkaySpace", "address": {"@type": "PostalAddress", "addressLocality": "London", "addressRegion": "England", "addressCountry": "GB"}}}, {"@type": "ListItem", "position": 16, "item": {"@type": "TattooParlor", "name": "Soteria Studios", "address": {"@type": "PostalAddress", "addressLocality": "London", "addressRegion": "England", "addressCountry": "GB"}, "url": "https://soteriastudios.co.uk/", "sameAs": ["https://www.instagram.com/soteria_studios"]}}, {"@type": "ListItem", "position": 17, "item": {"@type": "TattooParlor", "name": "Blind Tiger Tattoo Studio", "address": {"@type": "PostalAddress", "addressLocality": "North Shields", "addressRegion": "England", "addressCountry": "GB"}, "sameAs": ["https://www.instagram.com/blindtigertattoo"]}}, {"@type": "ListItem", "position": 18, "item": {"@type": "TattooParlor", "name": "Belladonna Studio", "address": {"@type": "PostalAddress", "addressLocality": "Norwich", "addressRegion": "England", "addressCountry": "GB"}, "sameAs": ["https://www.instagram.com/belladonna.studio.norwich/"]}}, {"@type": "ListItem", "position": 19, "item": {"@type": "TattooParlor", "name": "New Leaf Tattoo", "address": {"@type": "PostalAddress", "addressLocality": "Norwich", "addressRegion": "England", "addressCountry": "GB"}, "url": "https://newleaftattoo.co.uk", "sameAs": ["https://www.instagram.com/poppysmallhandstattoo"]}}, {"@type": "ListItem", "position": 20, "item": {"@type": "TattooParlor", "name": "The Crypt Tattoo Studio", "address": {"@type": "PostalAddress", "addressLocality": "Rochester", "addressRegion": "England", "addressCountry": "GB"}, "sameAs": ["https://www.instagram.com/thecrypttattoostudio"]}}, {"@type": "ListItem", "position": 21, "item": {"@type": "TattooParlor", "name": "Let Me Ink", "address": {"@type": "PostalAddress", "addressLocality": "York", "addressRegion": "England", "addressCountry": "GB"}, "sameAs": ["https://www.instagram.com/letmeink_studio/"]}}, {"@type": "ListItem", "position": 22, "item": {"@type": "TattooParlor", "name": "Earl Grey Tattoo Studio", "address": {"@type": "PostalAddress", "addressLocality": "Dundee", "addressRegion": "Scotland", "addressCountry": "GB"}, "url": "https://earlgreystudio.co.uk/", "sameAs": ["https://www.instagram.com/earlgreytattoo/"]}}, {"@type": "ListItem", "position": 23, "item": {"@type": "TattooParlor", "name": "Heaven 'N' Hell Tattoos & Piercings", "address": {"@type": "PostalAddress", "addressLocality": "Falkirk", "addressRegion": "Scotland", "addressCountry": "GB"}}}]}</script>
+<!-- Cloudflare Web Analytics: paste the one line snippet from Cloudflare here -->
+</head>
+<body>
+<div class="wrap">
+  <header class="site-head">
+    <a class="lockup" href="/"><span class="name">Women in INK</span><span class="tag">a map of women who tattoo</span></a>
+    <nav><a href="/flash-days.html">Flash days</a><a href="/about.html">How listings work</a></nav>
+  </header>
+
+  <nav class="regions" aria-label="Choose a region"><a href="/">Northeast US</a><a href="/uk.html" aria-current="page">UK</a></nav>
+  <h1>Women owned tattoo shops in the UK</h1>
+  <p class="lede">Find a women owned tattoo shop near you in England, Scotland, Wales and Northern Ireland. See their work, catch their flash days and book your next tattoo.</p>
+
+  
+  <p class="week-none"><a href="/flash-days.html">See upcoming flash days</a></p>
+  
+
+  <div class="layout">
+    <div class="map-col"><div id="map" role="region" aria-label="Map of the shops"></div><p class="legend"><span>Shop</span><span class="lfd">Flash day this week</span></p></div>
+
+    <div class="list-col">
+      <div class="dropdowns">
+        <details class="dd" id="dd-state">
+          <summary><span class="dd-name">Country</span><span class="dd-val" data-all="All">All</span></summary>
+          <div class="dd-panel" role="group" aria-label="Filter by country">
+            <label class="dd-opt"><input type="checkbox" class="f-state" value="ENG" data-label="England"> England</label>
+            <label class="dd-opt"><input type="checkbox" class="f-state" value="SCT" data-label="Scotland"> Scotland</label>
+            <button type="button" class="dd-clear">Clear</button>
+          </div>
+        </details>
+        <details class="dd" id="dd-style">
+          <summary><span class="dd-name">Style</span><span class="dd-val" data-all="Any">Any</span></summary>
+          <div class="dd-panel" role="group" aria-label="Filter by style">
+            <p class="dd-group">The look</p>
+            <label class="dd-opt"><input type="checkbox" class="f-spec" value="fine" data-label="Delicate lines"> <span>Delicate lines<small>Thin, soft linework. Light and subtle.</small></span></label>
+            <label class="dd-opt"><input type="checkbox" class="f-spec" value="bold" data-label="Bold black"> <span>Bold black<small>Solid black ink and strong shapes.</small></span></label>
+            <label class="dd-opt"><input type="checkbox" class="f-spec" value="color" data-label="Full color"> <span>Full color<small>Bright, saturated color.</small></span></label>
+            <label class="dd-opt"><input type="checkbox" class="f-spec" value="bng" data-label="Black and grey shading"> <span>Black and grey shading<small>Soft shading in black and grey, no color.</small></span></label>
+            <p class="dd-group">The style</p>
+            <label class="dd-opt"><input type="checkbox" class="f-spec" value="classic" data-label="Classic old school"> <span>Classic old school<small>Bold outlines, bright colors: roses, swallows, daggers.</small></span></label>
+            <label class="dd-opt"><input type="checkbox" class="f-spec" value="modern" data-label="Modern old school"> <span>Modern old school<small>Old school with more detail, depth and color.</small></span></label>
+            <label class="dd-opt"><input type="checkbox" class="f-spec" value="photo" data-label="Looks like a photo"> <span>Looks like a photo<small>Realistic portraits, animals and objects.</small></span></label>
+            <label class="dd-opt"><input type="checkbox" class="f-spec" value="drawn" data-label="Drawn, like an illustration"> <span>Drawn, like an illustration<small>Looks like a drawing or a storybook picture.</small></span></label>
+            <label class="dd-opt"><input type="checkbox" class="f-spec" value="japanese" data-label="Japanese style"> <span>Japanese style<small>Koi, dragons, waves and flowers in the Japanese tradition.</small></span></label>
+            <label class="dd-opt"><input type="checkbox" class="f-spec" value="patterns" data-label="Patterns and shapes"> <span>Patterns and shapes<small>Mandalas, dots, lines and geometric designs.</small></span></label>
+            <p class="dd-group">What you want</p>
+            <label class="dd-opt"><input type="checkbox" class="f-spec" value="plants" data-label="Flowers and plants"> <span>Flowers and plants<small>Florals, leaves and botanical designs.</small></span></label>
+            <label class="dd-opt"><input type="checkbox" class="f-spec" value="cover" data-label="Covers old tattoos"> <span>Covers old tattoos<small>Turns an old tattoo into something new.</small></span></label>
+            <label class="dd-opt"><input type="checkbox" class="f-spec" value="handpoke" data-label="Hand poked, no machine"> <span>Hand poked, no machine<small>Done by hand, dot by dot. Quiet and gentle.</small></span></label>
+            <button type="button" class="dd-clear">Clear</button>
+          </div>
+        </details>
+      </div>
+      <label class="hp" for="q">Search</label>
+      <input id="q" class="search" type="search" placeholder="Search by shop, town or style" aria-label="Search by shop, town or style">
+      <div class="toggles">
+        <label><input type="checkbox" id="f-flash"> Has flash</label>
+        
+        
+        <label><input type="checkbox" id="f-fd"> Flash day this week</label>
+      </div>
+      <div class="near"><button type="button" class="chip near-btn">Near me</button>
+        <label>Within <select class="near-radius" aria-label="Distance"><option value="">any distance</option><option value="10">10 miles</option><option value="25">25 miles</option><option value="50" selected>50 miles</option><option value="100">100 miles</option></select></label>
+        <span class="why near-msg">Your location stays on your phone.</span></div>
+      <p class="count" id="count" aria-live="polite">23 shops</p>
+
+      <ol class="shops" id="shops">
+      
+        <li class="shop" id="foxglove-and-fern-studio-accrington" data-slug="foxglove-and-fern-studio-accrington" data-state="ENG" data-spec="" data-flash="1" data-mom="0" data-inink="0" data-text="foxglove and fern studio accrington eng ">
+          <h2><button type="button" class="show-on-map">Foxglove and Fern Studio</button></h2>
+          <p class="place">Accrington, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://www.instagram.com/foxgloveandfernstudio/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by form</span><span>Has flash</span></p>
+          
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/foxgloveandfernstudio/" rel="noopener" target="_blank">See their work</a>
+            
+            
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="secret-society-tattoo-collective-anstey" data-slug="secret-society-tattoo-collective-anstey" data-state="ENG" data-spec="fine bng modern photo" data-flash="0" data-mom="0" data-inink="0" data-text="secret society tattoo collective anstey eng  delicate lines black and grey shading modern old school looks like a photo">
+          <h2><button type="button" class="show-on-map">Secret Society Tattoo Collective</button></h2>
+          <p class="place">Anstey, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://www.thesecretsocietycollective.com/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by email</span></p>
+          <ul class="specs" aria-label="Styles"><li title="Thin, soft linework. Light and subtle.">Delicate lines</li><li title="Soft shading in black and grey, no color.">Black and grey shading</li><li title="Old school with more detail, depth and color.">Modern old school</li><li title="Realistic portraits, animals and objects.">Looks like a photo</li></ul>
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/secret_society_leics" rel="noopener" target="_blank">See their work</a>
+            
+            <a class="btn" href="https://www.thesecretsocietycollective.com/" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="outliers-ink-birmingham" data-slug="outliers-ink-birmingham" data-state="ENG" data-spec="fine bold photo cover" data-flash="0" data-mom="0" data-inink="0" data-text="outliers ink birmingham eng  delicate lines bold black looks like a photo covers old tattoos">
+          <h2><button type="button" class="show-on-map">Outliers Ink</button></h2>
+          <p class="place">Birmingham, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://outliers.ink/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books online</span></p>
+          <ul class="specs" aria-label="Styles"><li title="Thin, soft linework. Light and subtle.">Delicate lines</li><li title="Solid black ink and strong shapes.">Bold black</li><li title="Realistic portraits, animals and objects.">Looks like a photo</li><li title="Turns an old tattoo into something new.">Covers old tattoos</li></ul>
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/outliers_ink" rel="noopener" target="_blank">See their work</a>
+            
+            <a class="btn" href="https://outliers.ink" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="studio-baby-brighton" data-slug="studio-baby-brighton" data-state="ENG" data-spec="bold color handpoke" data-flash="0" data-mom="0" data-inink="0" data-text="studio baby brighton eng  bold black full color hand poked, no machine">
+          <h2><button type="button" class="show-on-map">Studio Baby</button></h2>
+          <p class="place">Brighton, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://www.studiobabybrighton.com/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by email</span></p>
+          <ul class="specs" aria-label="Styles"><li title="Solid black ink and strong shapes.">Bold black</li><li title="Bright, saturated color.">Full color</li><li title="Done by hand, dot by dot. Quiet and gentle.">Hand poked, no machine</li></ul>
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/studio___baby/" rel="noopener" target="_blank">See their work</a>
+            
+            <a class="btn" href="https://www.studiobabybrighton.com" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="the-dollhouse-brighton" data-slug="the-dollhouse-brighton" data-state="ENG" data-spec="bold modern drawn plants" data-flash="0" data-mom="0" data-inink="0" data-text="the dollhouse brighton eng  bold black modern old school drawn, like an illustration flowers and plants">
+          <h2><button type="button" class="show-on-map">The Dollhouse</button></h2>
+          <p class="place">Brighton, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://www.thedollhousetattoo.com/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by form</span></p>
+          <ul class="specs" aria-label="Styles"><li title="Solid black ink and strong shapes.">Bold black</li><li title="Old school with more detail, depth and color.">Modern old school</li><li title="Looks like a drawing or a storybook picture.">Drawn, like an illustration</li><li title="Florals, leaves and botanical designs.">Flowers and plants</li></ul>
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/thedollhousebtn" rel="noopener" target="_blank">See their work</a>
+            
+            <a class="btn" href="https://www.thedollhousetattoo.com" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="black-sheep-tattoo-bristol" data-slug="black-sheep-tattoo-bristol" data-state="ENG" data-spec="bold classic modern drawn" data-flash="0" data-mom="0" data-inink="0" data-text="black sheep tattoo bristol eng  bold black classic old school modern old school drawn, like an illustration">
+          <h2><button type="button" class="show-on-map">Black Sheep Tattoo</button></h2>
+          <p class="place">Bristol, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://th-ink.co.uk/?p=21888" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by email</span></p>
+          <ul class="specs" aria-label="Styles"><li title="Solid black ink and strong shapes.">Bold black</li><li title="Bold outlines, bright colors: roses, swallows, daggers.">Classic old school</li><li title="Old school with more detail, depth and color.">Modern old school</li><li title="Looks like a drawing or a storybook picture.">Drawn, like an illustration</li></ul>
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/blacksheepbristol/" rel="noopener" target="_blank">See their work</a>
+            
+            <a class="btn" href="https://www.blacksheepbristol.com" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="envision-ink-bristol" data-slug="envision-ink-bristol" data-state="ENG" data-spec="" data-flash="0" data-mom="0" data-inink="0" data-text="envision ink bristol eng ">
+          <h2><button type="button" class="show-on-map">Envision Ink</button></h2>
+          <p class="place">Bristol, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://www.envisionink.co.uk/about-us/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by form</span></p>
+          
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/envision_ink_/" rel="noopener" target="_blank">See their work</a>
+            
+            <a class="btn" href="https://www.envisionink.co.uk" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="forever-bound-tattoo-bristol" data-slug="forever-bound-tattoo-bristol" data-state="ENG" data-spec="fine bold classic photo" data-flash="1" data-mom="0" data-inink="0" data-text="forever bound tattoo bristol eng  delicate lines bold black classic old school looks like a photo">
+          <h2><button type="button" class="show-on-map">Forever Bound Tattoo</button></h2>
+          <p class="place">Bristol, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://www.instagram.com/foreverboundtattoo/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by form</span><span>Has flash</span></p>
+          <ul class="specs" aria-label="Styles"><li title="Thin, soft linework. Light and subtle.">Delicate lines</li><li title="Solid black ink and strong shapes.">Bold black</li><li title="Bold outlines, bright colors: roses, swallows, daggers.">Classic old school</li><li title="Realistic portraits, animals and objects.">Looks like a photo</li></ul>
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/foreverboundtattoo/" rel="noopener" target="_blank">See their work</a>
+            
+            <a class="btn" href="https://www.foreverboundtattoostudio.co.uk" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="fox-and-dagger-studios-cirencester" data-slug="fox-and-dagger-studios-cirencester" data-state="ENG" data-spec="" data-flash="0" data-mom="0" data-inink="0" data-text="fox and dagger studios cirencester eng ">
+          <h2><button type="button" class="show-on-map">Fox and Dagger Studios</button></h2>
+          <p class="place">Cirencester, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://www.fresha.com/nl/a/fox-and-dagger-studios-cirencester-9-love-lane-pbeq03hw" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books online</span></p>
+          
+          
+          
+          
+          <div class="links">
+            
+            
+            
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="gilded-leopard-tattoo-leeds" data-slug="gilded-leopard-tattoo-leeds" data-state="ENG" data-spec="" data-flash="1" data-mom="0" data-inink="0" data-text="gilded leopard tattoo leeds eng ">
+          <h2><button type="button" class="show-on-map">Gilded Leopard Tattoo</button></h2>
+          <p class="place">Leeds, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://www.gildedleopardtattoo.co.uk" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books online</span><span>Has flash</span></p>
+          
+          
+          
+          
+          <div class="links">
+            
+            
+            <a class="btn" href="https://www.gildedleopardtattoo.co.uk" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="the-aviary-leeds" data-slug="the-aviary-leeds" data-state="ENG" data-spec="fine modern drawn plants" data-flash="0" data-mom="0" data-inink="0" data-text="the aviary leeds eng  delicate lines modern old school drawn, like an illustration flowers and plants">
+          <h2><button type="button" class="show-on-map">The Aviary</button></h2>
+          <p class="place">Leeds, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://www.theaviary.studio/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by form</span></p>
+          <ul class="specs" aria-label="Styles"><li title="Thin, soft linework. Light and subtle.">Delicate lines</li><li title="Old school with more detail, depth and color.">Modern old school</li><li title="Looks like a drawing or a storybook picture.">Drawn, like an illustration</li><li title="Florals, leaves and botanical designs.">Flowers and plants</li></ul>
+          
+          
+          
+          <div class="links">
+            
+            
+            <a class="btn" href="https://www.theaviary.studio/" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="hellcat-tattoo-liverpool" data-slug="hellcat-tattoo-liverpool" data-state="ENG" data-spec="" data-flash="0" data-mom="0" data-inink="0" data-text="hellcat tattoo liverpool eng ">
+          <h2><button type="button" class="show-on-map">Hellcat Tattoo</button></h2>
+          <p class="place">Liverpool, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://www.hellcattattoo.co.uk/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by email</span></p>
+          
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/hellcattattoostudio/" rel="noopener" target="_blank">See their work</a>
+            
+            <a class="btn" href="https://www.hellcattattoo.co.uk/" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="deity-tattoo-london-london" data-slug="deity-tattoo-london-london" data-state="ENG" data-spec="bold patterns handpoke" data-flash="0" data-mom="0" data-inink="0" data-text="deity tattoo london london eng  bold black patterns and shapes hand poked, no machine">
+          <h2><button type="button" class="show-on-map">Deity Tattoo London</button></h2>
+          <p class="place">London, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://www.deitytattoo.com/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by form</span></p>
+          <ul class="specs" aria-label="Styles"><li title="Solid black ink and strong shapes.">Bold black</li><li title="Mandalas, dots, lines and geometric designs.">Patterns and shapes</li><li title="Done by hand, dot by dot. Quiet and gentle.">Hand poked, no machine</li></ul>
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/deitytattoo/" rel="noopener" target="_blank">See their work</a>
+            
+            <a class="btn" href="https://www.deitytattoo.com/" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="latex-heart-tattoo-london" data-slug="latex-heart-tattoo-london" data-state="ENG" data-spec="fine bold photo japanese" data-flash="0" data-mom="0" data-inink="0" data-text="latex heart tattoo london eng  delicate lines bold black looks like a photo japanese style">
+          <h2><button type="button" class="show-on-map">Latex Heart Tattoo</button></h2>
+          <p class="place">London, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://latexhearttattoo.com" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by form</span></p>
+          <ul class="specs" aria-label="Styles"><li title="Thin, soft linework. Light and subtle.">Delicate lines</li><li title="Solid black ink and strong shapes.">Bold black</li><li title="Realistic portraits, animals and objects.">Looks like a photo</li><li title="Koi, dragons, waves and flowers in the Japanese tradition.">Japanese style</li></ul>
+          
+          
+          <div class="fdays">
+            <h3>Upcoming flash days</h3>
+            <p class="fday" data-end="2026-11-07"><span class="when">Sat Nov 7</span>: Flash day deals. Flash day deals, walk ins. Walk in on the day.<br>
+              <a href="https://www.instagram.com/lucyorbarker/p/De96KRFMAdi/" rel="noopener" target="_blank">See their post</a></p>
+            
+          </div>
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/latexhearttattoo/" rel="noopener" target="_blank">See their work</a>
+            
+            <a class="btn" href="https://latexhearttattoo.com" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="okayspace-london" data-slug="okayspace-london" data-state="ENG" data-spec="" data-flash="0" data-mom="0" data-inink="0" data-text="okayspace london eng ">
+          <h2><button type="button" class="show-on-map">OkaySpace</button></h2>
+          <p class="place">London, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://www.altpress.com/okayspace-london-tattoos-interview/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a></p>
+          
+          
+          
+          
+          <div class="links">
+            
+            
+            
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="soteria-studios-london" data-slug="soteria-studios-london" data-state="ENG" data-spec="" data-flash="0" data-mom="0" data-inink="0" data-text="soteria studios london eng ">
+          <h2><button type="button" class="show-on-map">Soteria Studios</button></h2>
+          <p class="place">London, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://soteriastudios.co.uk/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by email</span></p>
+          
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/soteria_studios" rel="noopener" target="_blank">See their work</a>
+            
+            <a class="btn" href="https://soteriastudios.co.uk/" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="blind-tiger-tattoo-studio-north-shields" data-slug="blind-tiger-tattoo-studio-north-shields" data-state="ENG" data-spec="" data-flash="0" data-mom="0" data-inink="0" data-text="blind tiger tattoo studio north shields eng ">
+          <h2><button type="button" class="show-on-map">Blind Tiger Tattoo Studio</button></h2>
+          <p class="place">North Shields, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://ilovenorthshields.com/getting-inked-blind-tiger-style/?amp=1" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a></p>
+          
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/blindtigertattoo" rel="noopener" target="_blank">See their work</a>
+            
+            
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="belladonna-studio-norwich" data-slug="belladonna-studio-norwich" data-state="ENG" data-spec="" data-flash="0" data-mom="0" data-inink="0" data-text="belladonna studio norwich eng ">
+          <h2><button type="button" class="show-on-map">Belladonna Studio</button></h2>
+          <p class="place">Norwich, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://www.instagram.com/belladonna.studio.norwich/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a></p>
+          
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/belladonna.studio.norwich/" rel="noopener" target="_blank">See their work</a>
+            
+            
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="new-leaf-tattoo-norwich" data-slug="new-leaf-tattoo-norwich" data-state="ENG" data-spec="fine plants" data-flash="0" data-mom="0" data-inink="0" data-text="new leaf tattoo norwich eng  delicate lines flowers and plants">
+          <h2><button type="button" class="show-on-map">New Leaf Tattoo</button></h2>
+          <p class="place">Norwich, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://newleaftattoo.co.uk/?page_id=274" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a></p>
+          <ul class="specs" aria-label="Styles"><li title="Thin, soft linework. Light and subtle.">Delicate lines</li><li title="Florals, leaves and botanical designs.">Flowers and plants</li></ul>
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/poppysmallhandstattoo" rel="noopener" target="_blank">See their work</a>
+            
+            <a class="btn" href="https://newleaftattoo.co.uk" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="the-crypt-tattoo-studio-rochester" data-slug="the-crypt-tattoo-studio-rochester" data-state="ENG" data-spec="fine color bng patterns" data-flash="0" data-mom="0" data-inink="0" data-text="the crypt tattoo studio rochester eng  delicate lines full color black and grey shading patterns and shapes">
+          <h2><button type="button" class="show-on-map">The Crypt Tattoo Studio</button></h2>
+          <p class="place">Rochester, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://getink.app/studios/thecrypttattoostudio" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by form</span></p>
+          <ul class="specs" aria-label="Styles"><li title="Thin, soft linework. Light and subtle.">Delicate lines</li><li title="Bright, saturated color.">Full color</li><li title="Soft shading in black and grey, no color.">Black and grey shading</li><li title="Mandalas, dots, lines and geometric designs.">Patterns and shapes</li></ul>
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/thecrypttattoostudio" rel="noopener" target="_blank">See their work</a>
+            
+            
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="let-me-ink-york" data-slug="let-me-ink-york" data-state="ENG" data-spec="" data-flash="1" data-mom="0" data-inink="0" data-text="let me ink york eng ">
+          <h2><button type="button" class="show-on-map">Let Me Ink</button></h2>
+          <p class="place">York, England<span class="dist"></span></p>
+          <p class="tagline"><a href="https://www.instagram.com/yoda.tattoos/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by DM</span><span>Has flash</span></p>
+          
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/letmeink_studio/" rel="noopener" target="_blank">See their work</a>
+            
+            
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="earl-grey-tattoo-studio-dundee" data-slug="earl-grey-tattoo-studio-dundee" data-state="SCT" data-spec="fine bold classic handpoke" data-flash="0" data-mom="0" data-inink="0" data-text="earl grey tattoo studio dundee sct  delicate lines bold black classic old school hand poked, no machine">
+          <h2><button type="button" class="show-on-map">Earl Grey Tattoo Studio</button></h2>
+          <p class="place">Dundee, Scotland<span class="dist"></span></p>
+          <p class="tagline"><a href="https://earlgreystudio.co.uk/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by form</span></p>
+          <ul class="specs" aria-label="Styles"><li title="Thin, soft linework. Light and subtle.">Delicate lines</li><li title="Solid black ink and strong shapes.">Bold black</li><li title="Bold outlines, bright colors: roses, swallows, daggers.">Classic old school</li><li title="Done by hand, dot by dot. Quiet and gentle.">Hand poked, no machine</li></ul>
+          
+          
+          
+          <div class="links">
+            <a class="btn solid" href="https://www.instagram.com/earlgreytattoo/" rel="noopener" target="_blank">See their work</a>
+            
+            <a class="btn" href="https://earlgreystudio.co.uk/" rel="noopener" target="_blank">Website</a>
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+        <li class="shop" id="heaven-n-hell-tattoos-piercings-falkirk" data-slug="heaven-n-hell-tattoos-piercings-falkirk" data-state="SCT" data-spec="" data-flash="0" data-mom="0" data-inink="0" data-text="heaven &#39;n&#39; hell tattoos &amp; piercings falkirk sct ">
+          <h2><button type="button" class="show-on-map">Heaven &#39;N&#39; Hell Tattoos &amp; Piercings</button></h2>
+          <p class="place">Falkirk, Scotland<span class="dist"></span></p>
+          <p class="tagline"><a href="https://falkirkherald.co.uk/business/falkirk-delivers-highlights-several-women-helping-revitalise-the-town-centre-3165980" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a></p>
+          
+          
+          
+          
+          <div class="links">
+            
+            
+            
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      
+      </ol>
+      <p class="empty" id="empty" hidden>No shops match. Try another country or clear the search.</p>
+      <div class="addshop"><strong>Don't see your shop?</strong><span>If you own or run a women owned shop in the UK (England, Scotland, Wales and Northern Ireland), add it here.</span><button type="button" class="btn solid" data-form="addlisting">Add your listing</button></div>
+    </div>
+  </div>
+
+  <section class="soon" id="women-who-tattoo" aria-labelledby="soon-title">
+    <h2 id="soon-title">Women who tattoo, at any shop</h2>
+    <p class="kick">Coming soon</p>
+    <p>Not every woman who tattoos works at a women owned shop. We're adding a list of women tattooers wherever they work. Sign up and we'll let you know when it's live, and add you if you'd like to be on it.</p>
+    <button type="button" class="btn solid" data-form="artist">Sign up as a woman who tattoos</button>
+  </section>
+
+  <footer>
+    <p>Women in INK is made by InINK, a flash booking site run by Jess and April, a working tattoo artist in Conway, NH. No shop pays to be listed, and nobody ranks higher for using InINK.</p>
+    <p>Own a women owned shop? <button type="button" class="linklike" data-form="addlisting" style="all:unset;cursor:pointer;color:var(--purple);text-decoration:underline;text-underline-offset:3px">Add your listing</button>. Know one that should be here? <button type="button" class="linklike" data-form="suggest" style="all:unset;cursor:pointer;color:var(--purple);text-decoration:underline;text-underline-offset:3px">Suggest a shop</button>.</p>
+    <p><a href="/about.html">How listings work, privacy and terms</a></p>
+  </footer>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlg-title">
+  <!-- claim -->
+  <form name="claim" method="POST" data-netlify="true" netlify-honeypot="company" data-kind="claim" hidden>
+    <input type="hidden" name="form-name" value="claim">
+    <input type="hidden" name="shop">
+    <h3 id="dlg-title">Claim this listing</h3>
+    <p>Once we've confirmed it's you, Jess sets up your InINK page from this listing and sends you a link to take it over. From there you can change anything.</p>
+    <p class="verify">For the shop's owner or artists only. To protect the shop, we confirm it's you before we change anything: we'll message the shop's own Instagram, or reply to an email from the shop's own address. Nothing changes until you answer.</p>
+    <label for="c-role">Who are you at the shop?</label><select id="c-role" name="role" required><option value="">Choose one</option><option>Owner</option><option>Co-owner</option><option>Artist who works here</option></select>
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+    <label for="c-name">Your name</label><input id="c-name" name="name" required autocomplete="name">
+    <label for="c-email">Email</label><input id="c-email" name="email" type="email" required autocomplete="email">
+    <label for="c-ig">The shop's Instagram</label><input id="c-ig" name="shop_instagram" required placeholder="@yourshop">
+    <label style="display:flex;gap:8px;align-items:flex-start;font-weight:400"><input type="checkbox" name="mom_owned" value="yes" style="width:auto;margin-top:4px"> I'm a mom in tattooing. Add a Mom owned badge to my listing.</label>
+    <label for="c-mom">In your words (optional)</label><input id="c-mom" name="mom_note" placeholder="Mom of two, tattooing since 2012">
+    <div class="row"><button type="button" class="btn" data-close>Cancel</button><button class="btn solid" type="submit">Send claim</button></div>
+  </form>
+  <!-- fix -->
+  <form name="fix" method="POST" data-netlify="true" netlify-honeypot="company" data-kind="fix" hidden>
+    <input type="hidden" name="form-name" value="fix">
+    <input type="hidden" name="shop">
+    <h3>Fix something</h3>
+    <p>Tell us what to change: hours, artists, how you book, a mom owned tag, or anything that's wrong.</p>
+    <p class="verify">For the shop's owner or artists only. To protect the shop, we confirm it's you before we change anything: we'll message the shop's own Instagram, or reply to an email from the shop's own address. Nothing changes until you answer.</p>
+    <label for="f-role">Who are you at the shop?</label><select id="f-role" name="role" required><option value="">Choose one</option><option>Owner</option><option>Co-owner</option><option>Artist who works here</option></select>
+    <label for="f-ig">The shop's Instagram</label><input id="f-ig" name="shop_instagram" required placeholder="@yourshop">
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+    <label for="f-msg">What should change?</label><textarea id="f-msg" name="message" required></textarea>
+    <label for="f-email">Email, so we can reply</label><input id="f-email" name="email" type="email" required autocomplete="email">
+    <div class="row"><button type="button" class="btn" data-close>Cancel</button><button class="btn solid" type="submit">Send fix</button></div>
+  </form>
+  <!-- add a flash day -->
+  <form name="addflash" method="POST" data-netlify="true" netlify-honeypot="company" data-kind="addflash" hidden>
+    <input type="hidden" name="form-name" value="addflash">
+    <input type="hidden" name="shop">
+    <h3>Add a flash day</h3>
+    <p>We add it to your listing and to "Flash days this week" when it's coming up. Shops on InINK can just create the flash day there.</p>
+    <p class="verify">For the shop's owner or artists only. To protect the shop, we confirm it's you before we change anything: we'll message the shop's own Instagram, or reply to an email from the shop's own address. Nothing changes until you answer.</p>
+    <label for="a-role">Who are you at the shop?</label><select id="a-role" name="role" required><option value="">Choose one</option><option>Owner</option><option>Co-owner</option><option>Artist who works here</option></select>
+    <label for="a-ig">The shop's Instagram</label><input id="a-ig" name="shop_instagram" required placeholder="@yourshop">
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+    <label for="a-date">Date (and end date if it runs longer)</label><input id="a-date" name="dates" required placeholder="Sat Nov 14">
+    <label for="a-offer">What's on offer</label><input id="a-offer" name="offer" placeholder="Holiday sheet, $80 to $150">
+    <label for="a-how">How people sign up or book</label><input id="a-how" name="how_to_book" placeholder="Walk in, DM, a form link...">
+    <label for="a-benefit">If it's a fundraiser, who does it benefit? (optional)</label><input id="a-benefit" name="benefits" placeholder="Local animal shelter, with a link if you have one">
+    <label for="a-link">Link to your post or sign up page</label><input id="a-link" name="link" type="url">
+    <label for="a-email">Email, so we can reply</label><input id="a-email" name="email" type="email" required autocomplete="email">
+    <div class="row"><button type="button" class="btn" data-close>Cancel</button><button class="btn solid" type="submit">Send flash day</button></div>
+  </form>
+  <!-- remove -->
+  <form name="remove" method="POST" data-netlify="true" netlify-honeypot="company" data-kind="remove" hidden>
+    <input type="hidden" name="form-name" value="remove">
+    <input type="hidden" name="shop">
+    <h3>Remove my listing</h3>
+    <p>No account and no questions about why. Once we've confirmed it's the shop, your listing comes down and won't be added again.</p>
+    <p class="verify">For the shop's owner or artists only. To protect the shop, we confirm it's you before we change anything: we'll message the shop's own Instagram, or reply to an email from the shop's own address. Nothing changes until you answer.</p>
+    <label for="r-role">Who are you at the shop?</label><select id="r-role" name="role" required><option value="">Choose one</option><option>Owner</option><option>Co-owner</option><option>Artist who works here</option></select>
+    <label for="r-ig">The shop's Instagram</label><input id="r-ig" name="shop_instagram" required placeholder="@yourshop">
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+    <label for="r-email">Email</label><input id="r-email" name="email" type="email" required autocomplete="email">
+    <div class="row"><button type="button" class="btn" data-close>Cancel</button><button class="btn solid" type="submit">Remove listing</button></div>
+  </form>
+  <!-- add your listing -->
+  <form name="addlisting" method="POST" data-netlify="true" netlify-honeypot="company" data-kind="addlisting" hidden>
+    <input type="hidden" name="form-name" value="addlisting">
+    <input type="hidden" name="shop" value="new">
+    <h3>Add your listing</h3>
+    <p>For women owned shops and private studios in the Northeast US (New England, New York and New Jersey) and the UK. We'll check it and add it.</p>
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+    <label for="l-shop">Shop name</label><input id="l-shop" name="shop_name" required>
+    <label for="l-town">Town or city</label><input id="l-town" name="town" required placeholder="Leeds">
+    <label for="l-ig">Instagram</label><input id="l-ig" name="instagram" placeholder="@yourshop">
+    <label for="l-web">Website (optional)</label><input id="l-web" name="website" type="url">
+    <label for="l-where">Where do you say you're women owned? A link to your bio, site or a post</label><input id="l-where" name="women_owned_source" required>
+    <label for="l-name">Your name</label><input id="l-name" name="name" required autocomplete="name">
+    <label for="l-email">Email</label><input id="l-email" name="email" type="email" required autocomplete="email">
+    <label style="display:flex;gap:8px;align-items:flex-start;font-weight:400"><input type="checkbox" name="mom_owned" value="yes" style="width:auto;margin-top:4px"> I'm a mom in tattooing. Add a Mom owned badge.</label>
+    <div class="row"><button type="button" class="btn" data-close>Cancel</button><button class="btn solid" type="submit">Send listing</button></div>
+  </form>
+  <!-- women who tattoo signup -->
+  <form name="artist" method="POST" data-netlify="true" netlify-honeypot="company" data-kind="artist" hidden>
+    <input type="hidden" name="form-name" value="artist">
+    <input type="hidden" name="shop" value="artist signup">
+    <h3>Women who tattoo</h3>
+    <p>We're building a list of women tattooers at any shop. Sign up and we'll let you know when it's live.</p>
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+    <label for="w-name">Your name</label><input id="w-name" name="name" required autocomplete="name">
+    <label for="w-ig">Your Instagram</label><input id="w-ig" name="instagram" required placeholder="@you">
+    <label for="w-shop">Where you tattoo (shop and town)</label><input id="w-shop" name="shop_and_town" required>
+    <label for="w-email">Email</label><input id="w-email" name="email" type="email" required autocomplete="email">
+    <label style="display:flex;gap:8px;align-items:flex-start;font-weight:400"><input type="checkbox" name="listed" value="yes" required style="width:auto;margin-top:4px"> I'm a woman who tattoos and I'd like to be listed when it's live.</label>
+    <label style="display:flex;gap:8px;align-items:flex-start;font-weight:400"><input type="checkbox" name="mom" value="yes" style="width:auto;margin-top:4px"> I'm a mom in tattooing.</label>
+    <div class="row"><button type="button" class="btn" data-close>Cancel</button><button class="btn solid" type="submit">Sign me up</button></div>
+  </form>
+  <!-- suggest -->
+  <form name="suggest" method="POST" data-netlify="true" netlify-honeypot="company" data-kind="suggest" hidden>
+    <input type="hidden" name="form-name" value="suggest">
+    <input type="hidden" name="shop" value="new">
+    <h3>Suggest a shop</h3>
+    <p>We only list shops that say they're women owned themselves, so a link to where they said it helps.</p>
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+    <label for="s-shop">Shop and town</label><input id="s-shop" name="suggestion" required>
+    <label for="s-link">Their Instagram or website</label><input id="s-link" name="link">
+    <div class="row"><button type="button" class="btn" data-close>Cancel</button><button class="btn solid" type="submit">Send suggestion</button></div>
+  </form>
+  <div id="dlg-done" class="done" hidden>
+    <h3 id="done-title">Sent</h3>
+    <p id="done-text"></p>
+    <div class="row"><button type="button" class="btn solid" data-close>Close</button></div>
+  </div>
+</dialog>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script>
+const SHOPS = [{"slug": "foxglove-and-fern-studio-accrington", "shop_name": "Foxglove and Fern Studio", "city": "Accrington", "state": "ENG", "lat": 53.7534, "lng": -2.3638, "region": "England", "fd": []}, {"slug": "secret-society-tattoo-collective-anstey", "shop_name": "Secret Society Tattoo Collective", "city": "Anstey", "state": "ENG", "lat": 52.673, "lng": -1.189, "region": "England", "fd": []}, {"slug": "outliers-ink-birmingham", "shop_name": "Outliers Ink", "city": "Birmingham", "state": "ENG", "lat": 52.478, "lng": -1.969, "region": "England", "fd": []}, {"slug": "studio-baby-brighton", "shop_name": "Studio Baby", "city": "Brighton", "state": "ENG", "lat": 50.827, "lng": -0.132, "region": "England", "fd": []}, {"slug": "the-dollhouse-brighton", "shop_name": "The Dollhouse", "city": "Brighton", "state": "ENG", "lat": 50.822, "lng": -0.14300000000000002, "region": "England", "fd": []}, {"slug": "black-sheep-tattoo-bristol", "shop_name": "Black Sheep Tattoo", "city": "Bristol", "state": "ENG", "lat": 51.465196152422706, "lng": -2.594, "region": "England", "fd": []}, {"slug": "envision-ink-bristol", "shop_name": "Envision Ink", "city": "Bristol", "state": "ENG", "lat": 51.46480384757729, "lng": -2.574, "region": "England", "fd": []}, {"slug": "forever-bound-tattoo-bristol", "shop_name": "Forever Bound Tattoo", "city": "Bristol", "state": "ENG", "lat": 51.465, "lng": -2.602, "region": "England", "fd": []}, {"slug": "fox-and-dagger-studios-cirencester", "shop_name": "Fox and Dagger Studios", "city": "Cirencester", "state": "ENG", "lat": 51.719, "lng": -1.968, "region": "England", "fd": []}, {"slug": "gilded-leopard-tattoo-leeds", "shop_name": "Gilded Leopard Tattoo", "city": "Leeds", "state": "ENG", "lat": 53.8008, "lng": -1.5411, "region": "England", "fd": []}, {"slug": "the-aviary-leeds", "shop_name": "The Aviary", "city": "Leeds", "state": "ENG", "lat": 53.819, "lng": -1.585, "region": "England", "fd": []}, {"slug": "hellcat-tattoo-liverpool", "shop_name": "Hellcat Tattoo", "city": "Liverpool", "state": "ENG", "lat": 53.372, "lng": -2.93, "region": "England", "fd": []}, {"slug": "deity-tattoo-london-london", "shop_name": "Deity Tattoo London", "city": "London", "state": "ENG", "lat": 51.47, "lng": -0.17600000000000002, "region": "England", "fd": []}, {"slug": "latex-heart-tattoo-london", "shop_name": "Latex Heart Tattoo", "city": "London", "state": "ENG", "lat": 51.545, "lng": -0.034, "region": "England", "fd": [["2026-11-07", "2026-11-07"]]}, {"slug": "okayspace-london", "shop_name": "OkaySpace", "city": "London", "state": "ENG", "lat": 51.517, "lng": -0.26, "region": "England", "fd": []}, {"slug": "soteria-studios-london", "shop_name": "Soteria Studios", "city": "London", "state": "ENG", "lat": 51.559, "lng": -0.099, "region": "England", "fd": []}, {"slug": "blind-tiger-tattoo-studio-north-shields", "shop_name": "Blind Tiger Tattoo Studio", "city": "North Shields", "state": "ENG", "lat": 55.009, "lng": -1.448, "region": "England", "fd": []}, {"slug": "belladonna-studio-norwich", "shop_name": "Belladonna Studio", "city": "Norwich", "state": "ENG", "lat": 52.6309, "lng": 1.3054000000000001, "region": "England", "fd": []}, {"slug": "new-leaf-tattoo-norwich", "shop_name": "New Leaf Tattoo", "city": "Norwich", "state": "ENG", "lat": 52.629, "lng": 1.285, "region": "England", "fd": []}, {"slug": "the-crypt-tattoo-studio-rochester", "shop_name": "The Crypt Tattoo Studio", "city": "Rochester", "state": "ENG", "lat": 51.388, "lng": 0.506, "region": "England", "fd": []}, {"slug": "let-me-ink-york", "shop_name": "Let Me Ink", "city": "York", "state": "ENG", "lat": 53.952, "lng": -1.08, "region": "England", "fd": []}, {"slug": "earl-grey-tattoo-studio-dundee", "shop_name": "Earl Grey Tattoo Studio", "city": "Dundee", "state": "SCT", "lat": 56.462, "lng": -2.9707, "region": "Scotland", "fd": []}, {"slug": "heaven-n-hell-tattoos-piercings-falkirk", "shop_name": "Heaven 'N' Hell Tattoos & Piercings", "city": "Falkirk", "state": "SCT", "lat": 56.0019, "lng": -3.7839, "region": "Scotland", "fd": []}];
+const DONE = {
+  claim: ["Claim sent", "Thank you! Look out for a message to the shop's Instagram or an email from Jess to confirm it's you. Then she'll send your InINK link."],
+  fix: ["Fix sent", "Thank you! Once we've confirmed it's you, we'll make the change."],
+  remove: ["Removal sent", "Thank you. Once we've confirmed it's the shop, your listing comes down."],
+  addflash: ["Flash day sent", "Thank you! Once we've confirmed it's you, we'll add it to your listing."],
+  addlisting: ["Listing sent", "Thank you! We'll check it and add it."],
+  artist: ["You're signed up", "Thank you! We'll let you know when the list of women who tattoo is live."],
+  suggest: ["Suggestion sent", "Thank you! We'll check it and add the shop if they say they're women owned."]
+};
+const bySlug = Object.fromEntries(SHOPS.map(s => [s.slug, s]));
+const pad = n => String(n).padStart(2, '0');
+const isoDay = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const TODAY = isoDay(new Date());
+const WEEK_END = isoDay(new Date(Date.now() + 6 * 864e5));
+document.querySelectorAll('[data-end]').forEach(el => { if (el.dataset.end < TODAY) el.remove(); });
+document.querySelectorAll('.fdays').forEach(b => { if (!b.querySelector('.fday')) b.remove(); });
+const weekBox = document.getElementById('this-week');
+if (weekBox && !weekBox.querySelector('.wk')) weekBox.querySelector('ol').outerHTML = '<p class="sub">No flash days listed for the next 7 days yet.</p>';
+const fdSoon = Object.fromEntries(SHOPS.map(s => [s.slug, s.fd.some(([a, b]) => b >= TODAY && a <= WEEK_END)]));
+const cards = [...document.querySelectorAll('.shop')];
+const markers = {};
+let map = null;
+let active = null;
+
+function setActive(slug, fly) {
+  if (active) {
+    document.getElementById(active)?.classList.remove('on');
+    markers[active]?.getElement().classList.remove('on');
+  }
+  active = slug;
+  const card = document.getElementById(slug);
+  card.classList.add('on');
+  const m = markers[slug];
+  if (m) {
+    m.getElement().classList.add('on');
+    if (fly && map) map.flyTo({ center: m.getLngLat(), zoom: Math.max(map.getZoom(), 11) });
+  }
+}
+
+try {
+  map = new maplibregl.Map({
+    container: 'map',
+    style: 'https://tiles.openfreemap.org/styles/positron',
+    bounds: [[-8.3, 49.9], [1.9, 58.8]],
+    fitBoundsOptions: { padding: 24 },
+    attributionControl: { compact: true }
+  });
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+  SHOPS.forEach(s => {
+    const el = document.createElement('button');
+    el.type = 'button';
+    el.className = fdSoon[s.slug] ? 'pin fd' : 'pin';
+    el.setAttribute('aria-label', s.shop_name + ', ' + s.city);
+    el.addEventListener('click', () => {
+      setActive(s.slug, false);
+      document.getElementById(s.slug).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    markers[s.slug] = new maplibregl.Marker({ element: el }).setLngLat([s.lng, s.lat]).addTo(map);
+  });
+} catch (e) {
+  document.getElementById('map').innerHTML = '<p style="padding:16px">The map could not load. The full list is below.</p>';
+}
+
+document.querySelectorAll('.show-on-map-week').forEach(b => b.addEventListener('click', () => {
+  const slug = b.closest('.wk').dataset.slug;
+  setActive(slug, true);
+  document.getElementById(slug).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}));
+let here = null;
+const miles = (a, b) => {
+  const r = x => x * Math.PI / 180, R = 3958.8;
+  const dLat = r(b[0] - a[0]), dLng = r(b[1] - a[1]);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(r(a[0])) * Math.cos(r(b[0])) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+};
+const radiusSel = [...document.querySelectorAll('.near-radius')];
+function distOf(slug) { const s = bySlug[slug]; return here ? miles(here, [s.lat, s.lng]) : null; }
+function applyNear() {
+  const rad = Number(radiusSel[0] ? radiusSel[0].value : 0) || Infinity;
+  document.querySelectorAll('[data-slug] .dist').forEach(el => {
+    const d = distOf(el.closest('[data-slug]').dataset.slug);
+    el.textContent = d == null ? '' : ' (' + Math.round(d) + ' mi)';
+  });
+  const wk = document.querySelector('#this-week ol');
+  if (wk && here) {
+    const items = [...wk.querySelectorAll('.wk')];
+    items.sort((a, b) => distOf(a.dataset.slug) - distOf(b.dataset.slug)).forEach(li => {
+      li.hidden = distOf(li.dataset.slug) > rad; wk.appendChild(li);
+    });
+  }
+  const list = document.getElementById('shops');
+  if (here) cards.sort((a, b) => distOf(a.dataset.slug) - distOf(b.dataset.slug)).forEach(c => list.appendChild(c));
+  applyFilters();
+}
+document.querySelectorAll('.near-btn').forEach(b => b.addEventListener('click', () => {
+  const msgs = document.querySelectorAll('.near-msg');
+  if (!navigator.geolocation) { msgs.forEach(m => m.textContent = 'Your browser can\'t share location. Pick a country instead.'); return; }
+  msgs.forEach(m => m.textContent = 'Finding you...');
+  navigator.geolocation.getCurrentPosition(pos => {
+    here = [pos.coords.latitude, pos.coords.longitude];
+    document.querySelectorAll('.near-btn').forEach(x => x.setAttribute('aria-pressed', 'true'));
+    msgs.forEach(m => m.textContent = 'Sorted by distance. Your location stays on your phone.');
+    if (map) map.flyTo({ center: [here[1], here[0]], zoom: 8 });
+    applyNear();
+  }, () => msgs.forEach(m => m.textContent = 'Location is off. Pick a country instead.'), { maximumAge: 600000, timeout: 10000 });
+}));
+radiusSel.forEach(s => s.addEventListener('change', () => { radiusSel.forEach(o => { o.value = s.value; }); applyNear(); }));
+cards.forEach(c => {
+  c.querySelector('.show-on-map').addEventListener('click', () => {
+    setActive(c.dataset.slug, true);
+    document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+});
+
+const statesOn = new Set();
+const specsOn = new Set();
+function ddLabel(dd, set, inputs) {
+  const v = dd.querySelector('.dd-val');
+  if (!set.size) { v.textContent = v.dataset.all; return; }
+  const names = inputs.filter(i => i.checked).map(i => i.dataset.label);
+  v.textContent = names.length === 1 ? names[0] : names.length + ' picked';
+}
+function fitToShown() {
+  if (!map) return;
+  const pts = SHOPS.filter(s => (!statesOn.size || statesOn.has(s.state)));
+  if (!pts.length) return;
+  const bb = new maplibregl.LngLatBounds();
+  pts.forEach(s => bb.extend([s.lng, s.lat]));
+  map.fitBounds(bb, { padding: 48, maxZoom: 11 });
+}
+[['dd-state', '.f-state', statesOn], ['dd-style', '.f-spec', specsOn]].forEach(([id, sel, set]) => {
+  const dd = document.getElementById(id);
+  if (!dd) return;
+  const inputs = [...dd.querySelectorAll(sel)];
+  inputs.forEach(i => i.addEventListener('change', () => {
+    i.checked ? set.add(i.value) : set.delete(i.value);
+    ddLabel(dd, set, inputs);
+    applyFilters();
+    if (id === 'dd-state') fitToShown();
+  }));
+  dd.querySelector('.dd-clear').addEventListener('click', () => {
+    inputs.forEach(i => { i.checked = false; });
+    set.clear();
+    ddLabel(dd, set, inputs);
+    applyFilters();
+    if (id === 'dd-state') fitToShown();
+  });
+});
+document.addEventListener('click', e => {
+  document.querySelectorAll('.dd[open]').forEach(d => { if (!d.contains(e.target)) d.open = false; });
+});
+const q = document.getElementById('q');
+const fFlash = document.getElementById('f-flash');
+const fMom = document.getElementById('f-mom');
+const fInink = document.getElementById('f-inink');
+const fFd = document.getElementById('f-fd');
+function applyFilters() {
+  const term = q.value.trim().toLowerCase();
+  let shown = 0;
+  cards.forEach(c => {
+    const ok = (!statesOn.size || statesOn.has(c.dataset.state))
+      && (!term || c.dataset.text.includes(term))
+      && (!specsOn.size || [...specsOn].some(k => c.dataset.spec.split(' ').includes(k)))
+      && (!fFlash || !fFlash.checked || c.dataset.flash === '1')
+      && (!fMom || !fMom.checked || c.dataset.mom === '1')
+      && (!fInink || !fInink.checked || c.dataset.inink === '1')
+      && (!fFd || !fFd.checked || fdSoon[c.dataset.slug])
+      && (!here || !(Number(radiusSel[0] && radiusSel[0].value) > 0) || distOf(c.dataset.slug) <= Number(radiusSel[0].value));
+    c.hidden = !ok;
+    const m = markers[c.dataset.slug];
+    if (m) m.getElement().style.display = ok ? '' : 'none';
+    if (ok) shown++;
+  });
+  document.getElementById('count').textContent = shown === 1 ? '1 shop' : shown + ' shops';
+  document.getElementById('empty').hidden = shown !== 0;
+}
+[q, fFlash, fMom, fInink, fFd].forEach(el => el && el.addEventListener('input', applyFilters));
+
+const dlg = document.getElementById('dlg');
+const done = document.getElementById('dlg-done');
+function openForm(kind, slug) {
+  dlg.querySelectorAll('form').forEach(f => { f.hidden = f.dataset.kind !== kind; });
+  done.hidden = true;
+  const f = dlg.querySelector('form[data-kind="' + kind + '"]');
+  f.reset();
+  if (slug) f.querySelector('input[name="shop"]').value = bySlug[slug].shop_name + ' (' + bySlug[slug].city + ', ' + bySlug[slug].region + ')';
+  dlg.showModal();
+}
+document.querySelectorAll('[data-form]').forEach(b => b.addEventListener('click', () => {
+  const card = b.closest('.shop');
+  openForm(b.dataset.form, card ? card.dataset.slug : null);
+}));
+dlg.addEventListener('click', e => { if (e.target.closest('[data-close]')) dlg.close(); });
+document.querySelectorAll('form[data-inline]').forEach(f => f.addEventListener('submit', async e => {
+  e.preventDefault();
+  try {
+    const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(f)).toString() });
+    if (!res.ok) throw new Error(res.status);
+    f.outerHTML = '<p class="sub">You are on the list for flash days. You can unsubscribe anytime.</p>';
+  } catch (err) { alert('That did not send. Please try again.'); }
+}));
+dlg.querySelectorAll('form').forEach(f => f.addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = f.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  try {
+    const res = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(f)).toString()
+    });
+    if (!res.ok) throw new Error(res.status);
+    f.hidden = true;
+    document.getElementById('done-title').textContent = DONE[f.dataset.kind][0];
+    document.getElementById('done-text').textContent = DONE[f.dataset.kind][1];
+    done.hidden = false;
+  } catch (err) {
+    alert('That did not send. Please try again, or email jess@ininktattoobooking.com.');
+  } finally {
+    btn.disabled = false;
+  }
+}));
+</script>
+</body>
+</html>

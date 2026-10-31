@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="{{ R.lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ R.title }}</title>
+<meta name="description" content="Find a women owned tattoo shop near you. {{ count }} shops in {{ R.area_long }}, with their flash, flash days and how to book.">
+<link rel="canonical" href="https://womeninink.com{{ R.path }}">
+<meta property="og:title" content="Women in INK: a map of women who tattoo">
+<meta property="og:description" content="Find a women owned tattoo shop near you, see their flash and book your next tattoo.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://womeninink.com{{ R.path }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+<style>
+{{ base_css }}
+.layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
+@media (min-width: 920px) {
+  .layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: start; }
+  .map-col { position: sticky; top: 16px; order: 2; }
+  .list-col { order: 1; }
+  #map { height: calc(100vh - 32px); max-height: 820px; }
+}
+#map { width: 100%; height: 46vh; min-height: 300px; border: 1px solid var(--line); border-radius: 4px; background: #ece6dd; }
+.pin { width: 14px; height: 14px; border-radius: 50%; background: var(--purple); border: 2px solid var(--paper); box-shadow: 0 0 0 1px var(--purple); cursor: pointer; }
+.pin.on { width: 20px; height: 20px; background: var(--ink); }
+.maplibregl-popup-content { font-family: var(--sans); font-size: 14px; border-radius: 4px; padding: 10px 12px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; margin-bottom: 8px; }
+.chip {
+  font: inherit; font-size: 14px; padding: 6px 12px; border-radius: 999px;
+  border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer;
+}
+.chip[aria-pressed="true"] { background: var(--purple); border-color: var(--purple); color: var(--paper); }
+.search { font: inherit; font-size: 15px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 4px; background: rgba(255,255,255,0.5); width: 100%; margin: 4px 0 8px; }
+.toggles { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; margin-bottom: 6px; }
+.toggles label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.count { font-size: 14px; color: var(--soft); margin: 4px 0 6px; }
+.shops { list-style: none; margin: 0; padding: 0; }
+.shop { border-top: 1px solid var(--line); padding: 20px 0 18px; scroll-margin-top: 16px; }
+.shop.on { background: linear-gradient(90deg, rgba(68,52,115,0.07), transparent 70%); }
+.shop h2 { font-family: var(--serif); font-size: 27px; line-height: 1.1; margin: 0; color: var(--ink); font-weight: 700; }
+.shop h2 button { all: unset; cursor: pointer; }
+.shop h2 button:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+.place { font-size: 14px; color: var(--soft); margin: 2px 0 10px; }
+blockquote { margin: 0 0 6px; font-family: var(--serif); font-style: italic; font-size: 21px; line-height: 1.3; color: var(--purple); }
+.source { font-size: 13px; color: var(--soft); margin: 0 0 12px; }
+.tagline { font-size: 14px; margin: 2px 0 8px; display: flex; flex-wrap: wrap; gap: 2px 0; }
+.tagline > * + *::before { content: ". "; }
+.tagline > *:last-child::after { content: "."; }
+.tagline a { color: var(--purple); font-weight: 600; text-decoration: none; }
+.tagline a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.specs { list-style: none; padding: 0; margin: 0 0 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+.specs li { font-size: 12px; padding: 2px 9px; border-radius: 999px; background: rgba(170, 179, 160, 0.35); color: var(--ink); }
+.specfilter { margin: 0 0 10px; display: grid; gap: 6px; }
+.specrow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.specfilter .lbl { font-size: 13px; color: var(--soft); margin-right: 4px; min-width: 96px; }
+.more-styles { font: inherit; font-size: 13px; background: none; border: 0; color: var(--purple); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 4px 2px; }
+#all-styles { display: grid; gap: 6px; }
+#all-styles[hidden] { display: none; }
+.spechint { font-size: 13px; color: var(--soft); margin: 2px 0 0; min-height: 1.4em; }
+.spec { font: inherit; font-size: 13px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; }
+.spec[aria-pressed="true"] { background: var(--sage); border-color: var(--sage); color: var(--ink); font-weight: 600; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.btn {
+  font: inherit; font-size: 14px; font-weight: 500; text-decoration: none; padding: 7px 14px; border-radius: 4px;
+  border: 1px solid var(--purple); color: var(--purple); background: transparent; cursor: pointer;
+}
+.btn.solid { background: var(--purple); color: var(--paper); }
+.owner { font-size: 13px; margin-top: 4px; }
+.owner summary { cursor: pointer; color: var(--soft); width: fit-content; }
+.owner[open] summary { color: var(--ink); font-weight: 500; }
+.owner-note { margin: 6px 0; color: var(--soft); }
+.owner-btns { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.verify { font-size: 13px; background: rgba(68, 52, 115, 0.07); border-left: 3px solid var(--purple); padding: 8px 10px; }
+.owner button { all: unset; cursor: pointer; color: var(--soft); text-decoration: underline; text-underline-offset: 3px; }
+.owner button:focus-visible { outline: 2px solid var(--purple); }
+.tag { display: inline-block; font-size: 12px; padding: 2px 8px; border-radius: 999px; background: rgba(170,179,160,0.35); margin-right: 6px; }
+.empty { padding: 24px 0; }
+dialog { border: 1px solid var(--line); border-radius: 6px; padding: 22px; max-width: 460px; width: calc(100% - 32px); background: var(--paper); color: var(--ink); }
+dialog::backdrop { background: rgba(23,19,27,0.45); }
+dialog h3 { font-family: var(--serif); font-size: 26px; margin: 0 0 6px; color: var(--purple); }
+dialog p { margin: 0 0 12px; font-size: 15px; }
+dialog label { display: block; font-size: 14px; font-weight: 500; margin: 10px 0 4px; }
+dialog input, dialog textarea { width: 100%; font: inherit; font-size: 15px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+dialog textarea { min-height: 90px; }
+.row { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
+.hp { position: absolute; left: -9999px; }
+.done { font-size: 15px; }
+.week { border: 1px solid var(--purple); border-radius: 6px; padding: 16px 16px 6px; margin: 0 0 24px; background: rgba(247,242,236,0.7); }
+.week h2 { font-family: var(--serif); color: var(--purple); font-size: 30px; margin: 0 0 2px; }
+.week .sub { font-size: 14px; color: var(--soft); margin: 0 0 12px; }
+.week ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.week li { border-top: 1px solid var(--line); padding: 10px 0; }
+.week .when { font-weight: 600; font-size: 15px; }
+.week .who { font-family: var(--serif); font-size: 20px; line-height: 1.15; }
+.week .who button { all: unset; cursor: pointer; }
+.week .what { font-size: 14px; margin: 2px 0 6px; }
+.week-none { font-size: 14px; color: var(--soft); margin: 0 0 20px; }
+.fdays { border-left: 3px solid var(--mauve); padding: 4px 0 4px 12px; margin: 0 0 12px; }
+.fdays h3 { font-size: 13px; font-weight: 600; margin: 0 0 4px; color: var(--purple); }
+.fday { font-size: 14px; margin: 0 0 6px; }
+.fday .when { font-weight: 600; }
+.fday a { margin-right: 10px; }
+.pin.fd { background: var(--mauve); box-shadow: 0 0 0 1px var(--purple), 0 0 0 5px rgba(183,154,175,0.45); }
+.legend { font-size: 13px; color: var(--soft); margin: 8px 0 0; display: flex; gap: 16px; flex-wrap: wrap; }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; background: var(--purple); }
+.legend .lfd::before { background: var(--mauve); box-shadow: 0 0 0 1px var(--purple); }
+.badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--rose); color: var(--ink); margin-right: 6px; vertical-align: 1px; }
+.benefit { font-size: 14px; }
+.dist { font-size: 13px; color: var(--soft); margin-left: 6px; font-weight: 400; }
+.near { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 14px; margin: 0 0 10px; }
+.near select { font: inherit; font-size: 14px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+.near .why { color: var(--soft); font-size: 13px; }
+.mom { font-size: 14px; margin: 0 0 10px; }
+.mom q { font-family: var(--serif); font-style: italic; color: var(--purple); }
+.regions { display: flex; gap: 6px; margin: 10px 0 0; }
+.regions a { font-size: 14px; font-weight: 500; padding: 6px 14px; border: 1px solid var(--purple); border-radius: 999px; text-decoration: none; color: var(--purple); }
+.regions a[aria-current="page"] { background: var(--purple); color: var(--paper); }
+.addshop { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; border: 1px dashed var(--purple); border-radius: 6px; padding: 12px 14px; margin: 18px 0 0; font-size: 15px; }
+.addshop strong { font-family: var(--serif); font-size: 20px; color: var(--purple); }
+.soon { border-top: 1px solid var(--line); margin-top: 36px; padding-top: 22px; max-width: 760px; }
+.soon h2 { font-family: var(--serif); color: var(--purple); font-size: 32px; margin: 0 0 4px; }
+.soon .kick { font-size: 14px; color: var(--soft); margin: 0 0 10px; }
+.signup { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 4px 0 12px; }
+.signup input { font: inherit; font-size: 15px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 4px; background: #fff; min-width: 220px; flex: 1; }
+blockquote a.q { color: inherit; text-decoration: none; }
+blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
+.dropdowns { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; position: relative; }
+.dd { position: static; }
+.dd summary { list-style: none; cursor: pointer; display: inline-flex; gap: 8px; align-items: center; font-size: 14px; padding: 7px 12px; border: 1px solid var(--line); border-radius: 4px; background: #fff; min-width: 150px; }
+.dd summary::-webkit-details-marker { display: none; }
+.dd summary::after { content: ""; margin-left: auto; border: 5px solid transparent; border-top-color: var(--soft); transform: translateY(3px); }
+.dd[open] summary { border-color: var(--purple); }
+.dd-name { color: var(--soft); }
+.dd-val { font-weight: 600; color: var(--ink); max-width: 16ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dd-panel { position: absolute; z-index: 20; top: calc(100% + 4px); left: 0; width: min(340px, 100%); max-height: 60vh; overflow: auto; background: #fff; border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 8px 24px rgba(23, 19, 27, 0.12); padding: 8px 12px 10px; }
+.dd-opt { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; padding: 5px 0; cursor: pointer; }
+.dd-opt input { margin-top: 3px; accent-color: var(--purple); }
+.dd-opt small { display: block; font-size: 12px; color: var(--soft); }
+.dd-group { font-size: 12px; font-weight: 600; color: var(--purple); margin: 8px 0 2px; }
+.dd-clear { font: inherit; font-size: 13px; background: none; border: 0; color: var(--purple); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 6px 0 0; }
+</style>
+<script type="application/ld+json">{{ jsonld }}</script>
+<!-- Cloudflare Web Analytics: paste the one line snippet from Cloudflare here -->
+</head>
+<body>
+<div class="wrap">
+  <header class="site-head">
+    <a class="lockup" href="/"><span class="name">Women in INK</span><span class="tag">a map of women who tattoo</span></a>
+    <nav><a href="/flash-days.html">Flash days</a><a href="/about.html">How listings work</a></nav>
+  </header>
+
+  <nav class="regions" aria-label="Choose a region">{% for x in regions %}<a href="{{ x.href }}"{% if x.key == R.key %} aria-current="page"{% endif %}>{{ x.tab }}</a>{% endfor %}</nav>
+  <h1>{{ R.h1 }}</h1>
+  <p class="lede">{{ R.lede }}</p>
+
+  {% if week %}
+  <section class="week" id="this-week" aria-labelledby="week-title">
+    <h2 id="week-title">Flash days this week</h2>
+    <p class="sub"><a href="/flash-days.html">See all upcoming flash days</a></p>
+    <div class="near"><button type="button" class="chip near-btn">Near me</button>
+      <label>Within <select class="near-radius" aria-label="Distance"><option value="">any distance</option><option value="10">10 miles</option><option value="25">25 miles</option><option value="50" selected>50 miles</option><option value="100">100 miles</option></select></label>
+      <span class="why near-msg">Your location stays on your phone.</span></div>
+    <ol>
+    {% for r in week %}
+      <li class="wk" data-end="{{ r.f.end }}" data-slug="{{ r.shop.slug }}">
+        <div class="when">{{ r.f.label }}<span class="dist"></span></div>
+        {% if r.f.benefits %}<div class="benefit"><span class="badge">Fundraiser</span>For {% if r.f.benefits_url %}<a href="{{ r.f.benefits_url }}" rel="noopener" target="_blank">{{ r.f.benefits }}</a>{% else %}{{ r.f.benefits }}{% endif %}</div>{% endif %}
+        <div class="who"><button type="button" class="show-on-map-week">{{ r.shop.shop_name }}</button></div>
+        <div class="what">{{ r.shop.city }}, {{ r.shop.place_region }}{% if r.f.offer %}. {{ r.f.offer }}{% endif %}{% if r.f.how %}. {{ r.f.how }}.{% endif %}</div>
+        {% if r.f.book_url %}<a href="{{ r.f.book_url }}" rel="noopener" target="_blank">Sign up</a>{% endif %}
+        {% if r.f.post_url %}<a href="{{ r.f.post_url }}" rel="noopener" target="_blank">See their post</a>{% endif %}
+      </li>
+    {% endfor %}
+    </ol>
+    <form name="flash-email" method="POST" data-netlify="true" netlify-honeypot="company" class="signup" data-inline="1">
+      <input type="hidden" name="form-name" value="flash-email">
+      <p class="hp"><label>Leave this empty <input name="company"></label></p>
+      <label class="hp" for="fe-email">Email</label>
+      <input id="fe-email" name="email" type="email" required placeholder="Get flash days by email" autocomplete="email">
+      <button class="btn solid" type="submit">Sign me up</button>
+    </form>
+  </section>
+  {% else %}
+  <p class="week-none"><a href="/flash-days.html">See upcoming flash days</a></p>
+  {% endif %}
+
+  <div class="layout">
+    <div class="map-col"><div id="map" role="region" aria-label="Map of the shops"></div>{% if any_fd %}<p class="legend"><span>Shop</span><span class="lfd">Flash day this week</span></p>{% endif %}</div>
+
+    <div class="list-col">
+      <div class="dropdowns">
+        <details class="dd" id="dd-state">
+          <summary><span class="dd-name">{{ R.unit|capitalize }}</span><span class="dd-val" data-all="All">All</span></summary>
+          <div class="dd-panel" role="group" aria-label="{{ R.filter_label }}">
+            {% for s in states %}<label class="dd-opt"><input type="checkbox" class="f-state" value="{{ s.code }}" data-label="{{ s.name }}"> {{ s.name }}</label>
+            {% endfor %}<button type="button" class="dd-clear">Clear</button>
+          </div>
+        </details>
+        {% if tag_groups %}<details class="dd" id="dd-style">
+          <summary><span class="dd-name">Style</span><span class="dd-val" data-all="Any">Any</span></summary>
+          <div class="dd-panel" role="group" aria-label="Filter by style">
+            {% for g in tag_groups %}{% if g.tags %}<p class="dd-group">{{ g.name }}</p>
+            {% for x in g.tags %}<label class="dd-opt"><input type="checkbox" class="f-spec" value="{{ x.key }}" data-label="{{ x.label }}"> <span>{{ x.label }}<small>{{ x.hint }}</small></span></label>
+            {% endfor %}{% endif %}{% endfor %}<button type="button" class="dd-clear">Clear</button>
+          </div>
+        </details>{% endif %}
+      </div>
+      <label class="hp" for="q">Search</label>
+      <input id="q" class="search" type="search" placeholder="Search by shop, town or style" aria-label="Search by shop, town or style">
+      <div class="toggles">
+        {% if any_flash %}<label><input type="checkbox" id="f-flash"> Has flash</label>{% endif %}
+        {% if any_mom %}<label><input type="checkbox" id="f-mom"> Mom owned</label>{% endif %}
+        {% if any_inink %}<label><input type="checkbox" id="f-inink"> Book flash on InINK</label>{% endif %}
+        {% if any_fd %}<label><input type="checkbox" id="f-fd"> Flash day this week</label>{% endif %}
+      </div>
+      <div class="near"><button type="button" class="chip near-btn">Near me</button>
+        <label>Within <select class="near-radius" aria-label="Distance"><option value="">any distance</option><option value="10">10 miles</option><option value="25">25 miles</option><option value="50" selected>50 miles</option><option value="100">100 miles</option></select></label>
+        <span class="why near-msg">Your location stays on your phone.</span></div>
+      <p class="count" id="count" aria-live="polite">{{ count }} shops</p>
+
+      <ol class="shops" id="shops">
+      {% for s in shops %}
+        <li class="shop" id="{{ s.slug }}" data-slug="{{ s.slug }}" data-state="{{ s.state }}" data-spec="{{ s.spec_keys }}" data-flash="{{ 1 if s.books_flash == 'yes' else 0 }}" data-mom="{{ 1 if s.mom_owned else 0 }}" data-inink="{{ 1 if s.inink_url else 0 }}" data-text="{{ s.search_text }}">
+          <h2><button type="button" class="show-on-map">{{ s.shop_name }}</button></h2>
+          <p class="place">{{ s.city }}, {{ s.place_region }}<span class="dist"></span></p>
+          <p class="tagline"><a href="{{ s.source_url }}" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a>{% for x in s.tagline_rest %}<span>{{ x }}</span>{% endfor %}</p>
+          {% if s.tags %}<ul class="specs" aria-label="Styles">{% for x in s.tags %}<li title="{{ x.hint }}">{{ x.label }}</li>{% endfor %}</ul>{% endif %}
+          {% if s.inink_url %}<p class="source on-inink">On InINK: <a href="{{ s.inink_url }}" rel="noopener" target="_blank">see their flash and book</a>.</p>{% endif %}
+          {% if s.mom_owned %}<p class="mom"><span class="badge">Mom owned</span>{% if s.mom_note %}<q>{{ s.mom_note }}</q>{% endif %}</p>{% endif %}
+          {% if s.fd %}<div class="fdays">
+            <h3>Upcoming flash days</h3>
+            {% for f in s.fd[:3] %}<p class="fday" data-end="{{ f.end }}">{% if f.benefits %}<span class="badge">Fundraiser</span>{% endif %}<span class="when">{{ f.label }}</span>{% if f.benefits %}, for {% if f.benefits_url %}<a href="{{ f.benefits_url }}" rel="noopener" target="_blank">{{ f.benefits }}</a>{% else %}{{ f.benefits }}{% endif %}{% endif %}{% if f.title %}: {{ f.title }}{% endif %}{% if f.offer %}. {{ f.offer }}{% endif %}{% if f.how %}. {{ f.how }}.{% endif %}<br>
+              {% if f.book_url %}<a href="{{ f.book_url }}" rel="noopener" target="_blank">Sign up</a>{% endif %}{% if f.post_url %}<a href="{{ f.post_url }}" rel="noopener" target="_blank">See their post</a>{% endif %}</p>
+            {% endfor %}
+          </div>{% endif %}
+          <div class="links">
+            {% if s.instagram_url %}<a class="btn solid" href="{{ s.instagram_url }}" rel="noopener" target="_blank">See their work</a>{% endif %}
+            {% if s.inink_url %}<a class="btn solid" href="{{ s.inink_url }}" rel="noopener" target="_blank">Book flash</a>{% endif %}
+            {% if s.website %}<a class="btn" href="{{ s.website }}" rel="noopener" target="_blank">Website</a>{% endif %}
+          </div>
+          <details class="owner">
+            <summary>Is this your shop?</summary>
+            <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
+            <div class="owner-btns">
+              <button type="button" data-form="claim">Claim this listing</button>
+              <button type="button" data-form="addflash">Add a flash day</button>
+              <button type="button" data-form="fix">Fix something</button>
+              <button type="button" data-form="remove">Remove my listing</button>
+            </div>
+          </details>
+        </li>
+      {% endfor %}
+      </ol>
+      <p class="empty" id="empty" hidden>No shops match. Try another {{ R.unit }} or clear the search.</p>
+      <div class="addshop"><strong>Don't see your shop?</strong><span>If you own or run a women owned shop in {{ R.area_long }}, add it here.</span><button type="button" class="btn solid" data-form="addlisting">Add your listing</button></div>
+    </div>
+  </div>
+
+  <section class="soon" id="women-who-tattoo" aria-labelledby="soon-title">
+    <h2 id="soon-title">Women who tattoo, at any shop</h2>
+    <p class="kick">Coming soon</p>
+    <p>Not every woman who tattoos works at a women owned shop. We're adding a list of women tattooers wherever they work. Sign up and we'll let you know when it's live, and add you if you'd like to be on it.</p>
+    <button type="button" class="btn solid" data-form="artist">Sign up as a woman who tattoos</button>
+  </section>
+
+  <footer>
+    <p>Women in INK is made by InINK, a flash booking site run by Jess and April, a working tattoo artist in Conway, NH. No shop pays to be listed, and nobody ranks higher for using InINK.</p>
+    <p>Own a women owned shop? <button type="button" class="linklike" data-form="addlisting" style="all:unset;cursor:pointer;color:var(--purple);text-decoration:underline;text-underline-offset:3px">Add your listing</button>. Know one that should be here? <button type="button" class="linklike" data-form="suggest" style="all:unset;cursor:pointer;color:var(--purple);text-decoration:underline;text-underline-offset:3px">Suggest a shop</button>.</p>
+    <p><a href="/about.html">How listings work, privacy and terms</a></p>
+  </footer>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlg-title">
+  <!-- claim -->
+  <form name="claim" method="POST" data-netlify="true" netlify-honeypot="company" data-kind="claim" hidden>
+    <input type="hidden" name="form-name" value="claim">
+    <input type="hidden" name="shop">
+    <h3 id="dlg-title">Claim this listing</h3>
+    <p>Once we've confirmed it's you, Jess sets up your InINK page from this listing and sends you a link to take it over. From there you can change anything.</p>
+    <p class="verify">For the shop's owner or artists only. To protect the shop, we confirm it's you before we change anything: we'll message the shop's own Instagram, or reply to an email from the shop's own address. Nothing changes until you answer.</p>
+    <label for="c-role">Who are you at the shop?</label><select id="c-role" name="role" required><option value="">Choose one</option><option>Owner</option><option>Co-owner</option><option>Artist who works here</option></select>
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+    <label for="c-name">Your name</label><input id="c-name" name="name" required autocomplete="name">
+    <label for="c-email">Email</label><input id="c-email" name="email" type="email" required autocomplete="email">
+    <label for="c-ig">The shop's Instagram</label><input id="c-ig" name="shop_instagram" required placeholder="@yourshop">
+    <label style="display:flex;gap:8px;align-items:flex-start;font-weight:400"><input type="checkbox" name="mom_owned" value="yes" style="width:auto;margin-top:4px"> I'm a mom in tattooing. Add a Mom owned badge to my listing.</label>
+    <label for="c-mom">In your words (optional)</label><input id="c-mom" name="mom_note" placeholder="Mom of two, tattooing since 2012">
+    <div class="row"><button type="button" class="btn" data-close>Cancel</button><button class="btn solid" type="submit">Send claim</button></div>
+  </form>
+  <!-- fix -->
+  <form name="fix" method="POST" data-netlify="true" netlify-honeypot="company" data-kind="fix" hidden>
+    <input type="hidden" name="form-name" value="fix">
+    <input type="hidden" name="shop">
+    <h3>Fix something</h3>
+    <p>Tell us what to change: hours, artists, how you book, a mom owned tag, or anything that's wrong.</p>
+    <p class="verify">For the shop's owner or artists only. To protect the shop, we confirm it's you before we change anything: we'll message the shop's own Instagram, or reply to an email from the shop's own address. Nothing changes until you answer.</p>
+    <label for="f-role">Who are you at the shop?</label><select id="f-role" name="role" required><option value="">Choose one</option><option>Owner</option><option>Co-owner</option><option>Artist who works here</option></select>
+    <label for="f-ig">The shop's Instagram</label><input id="f-ig" name="shop_instagram" required placeholder="@yourshop">
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+    <label for="f-msg">What should change?</label><textarea id="f-msg" name="message" required></textarea>
+    <label for="f-email">Email, so we can reply</label><input id="f-email" name="email" type="email" required autocomplete="email">
+    <div class="row"><button type="button" class="btn" data-close>Cancel</button><button class="btn solid" type="submit">Send fix</button></div>
+  </form>
+  <!-- add a flash day -->
+  <form name="addflash" method="POST" data-netlify="true" netlify-honeypot="company" data-kind="addflash" hidden>
+    <input type="hidden" name="form-name" value="addflash">
+    <input type="hidden" name="shop">
+    <h3>Add a flash day</h3>
+    <p>We add it to your listing and to "Flash days this week" when it's coming up. Shops on InINK can just create the flash day there.</p>
+    <p class="verify">For the shop's owner or artists only. To protect the shop, we confirm it's you before we change anything: we'll message the shop's own Instagram, or reply to an email from the shop's own address. Nothing changes until you answer.</p>
+    <label for="a-role">Who are you at the shop?</label><select id="a-role" name="role" required><option value="">Choose one</option><option>Owner</option><option>Co-owner</option><option>Artist who works here</option></select>
+    <label for="a-ig">The shop's Instagram</label><input id="a-ig" name="shop_instagram" required placeholder="@yourshop">
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+    <label for="a-date">Date (and end date if it runs longer)</label><input id="a-date" name="dates" required placeholder="Sat Nov 14">
+    <label for="a-offer">What's on offer</label><input id="a-offer" name="offer" placeholder="Holiday sheet, $80 to $150">
+    <label for="a-how">How people sign up or book</label><input id="a-how" name="how_to_book" placeholder="Walk in, DM, a form link...">
+    <label for="a-benefit">If it's a fundraiser, who does it benefit? (optional)</label><input id="a-benefit" name="benefits" placeholder="Local animal shelter, with a link if you have one">
+    <label for="a-link">Link to your post or sign up page</label><input id="a-link" name="link" type="url">
+    <label for="a-email">Email, so we can reply</label><input id="a-email" name="email" type="email" required autocomplete="email">
+    <div class="row"><button type="button" class="btn" data-close>Cancel</button><button class="btn solid" type="submit">Send flash day</button></div>
+  </form>
+  <!-- remove -->
+  <form name="remove" method="POST" data-netlify="true" netlify-honeypot="company" data-kind="remove" hidden>
+    <input type="hidden" name="form-name" value="remove">
+    <input type="hidden" name="shop">
+    <h3>Remove my listing</h3>
+    <p>No account and no questions about why. Once we've confirmed it's the shop, your listing comes down and won't be added again.</p>
+    <p class="verify">For the shop's owner or artists only. To protect the shop, we confirm it's you before we change anything: we'll message the shop's own Instagram, or reply to an email from the shop's own address. Nothing changes until you answer.</p>
+    <label for="r-role">Who are you at the shop?</label><select id="r-role" name="role" required><option value="">Choose one</option><option>Owner</option><option>Co-owner</option><option>Artist who works here</option></select>
+    <label for="r-ig">The shop's Instagram</label><input id="r-ig" name="shop_instagram" required placeholder="@yourshop">
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+    <label for="r-email">Email</label><input id="r-email" name="email" type="email" required autocomplete="email">
+    <div class="row"><button type="button" class="btn" data-close>Cancel</button><button class="btn solid" type="submit">Remove listing</button></div>
+  </form>
+  <!-- add your listing -->
+  <form name="addlisting" method="POST" data-netlify="true" netlify-honeypot="company" data-kind="addlisting" hidden>
+    <input type="hidden" name="form-name" value="addlisting">
+    <input type="hidden" name="shop" value="new">
+    <h3>Add your listing</h3>
+    <p>For women owned shops and private studios in the Northeast US (New England, New York and New Jersey) and the UK. We'll check it and add it.</p>
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+    <label for="l-shop">Shop name</label><input id="l-shop" name="shop_name" required>
+    <label for="l-town">{{ R.town_label }}</label><input id="l-town" name="town" required placeholder="{{ R.town_eg }}">
+    <label for="l-ig">Instagram</label><input id="l-ig" name="instagram" placeholder="@yourshop">
+    <label for="l-web">Website (optional)</label><input id="l-web" name="website" type="url">
+    <label for="l-where">Where do you say you're women owned? A link to your bio, site or a post</label><input id="l-where" name="women_owned_source" required>
+    <label for="l-name">Your name</label><input id="l-name" name="name" required autocomplete="name">
+    <label for="l-email">Email</label><input id="l-email" name="email" type="email" required autocomplete="email">
+    <label style="display:flex;gap:8px;align-items:flex-start;font-weight:400"><input type="checkbox" name="mom_owned" value="yes" style="width:auto;margin-top:4px"> I'm a mom in tattooing. Add a Mom owned badge.</label>
+    <div class="row"><button type="button" class="btn" data-close>Cancel</button><button class="btn solid" type="submit">Send listing</button></div>
+  </form>
+  <!-- women who tattoo signup -->
+  <form name="artist" method="POST" data-netlify="true" netlify-honeypot="company" data-kind="artist" hidden>
+    <input type="hidden" name="form-name" value="artist">
+    <input type="hidden" name="shop" value="artist signup">
+    <h3>Women who tattoo</h3>
+    <p>We're building a list of women tattooers at any shop. Sign up and we'll let you know when it's live.</p>
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+    <label for="w-name">Your name</label><input id="w-name" name="name" required autocomplete="name">
+    <label for="w-ig">Your Instagram</label><input id="w-ig" name="instagram" required placeholder="@you">
+    <label for="w-shop">Where you tattoo (shop and town)</label><input id="w-shop" name="shop_and_town" required>
+    <label for="w-email">Email</label><input id="w-email" name="email" type="email" required autocomplete="email">
+    <label style="display:flex;gap:8px;align-items:flex-start;font-weight:400"><input type="checkbox" name="listed" value="yes" required style="width:auto;margin-top:4px"> I'm a woman who tattoos and I'd like to be listed when it's live.</label>
+    <label style="display:flex;gap:8px;align-items:flex-start;font-weight:400"><input type="checkbox" name="mom" value="yes" style="width:auto;margin-top:4px"> I'm a mom in tattooing.</label>
+    <div class="row"><button type="button" class="btn" data-close>Cancel</button><button class="btn solid" type="submit">Sign me up</button></div>
+  </form>
+  <!-- suggest -->
+  <form name="suggest" method="POST" data-netlify="true" netlify-honeypot="company" data-kind="suggest" hidden>
+    <input type="hidden" name="form-name" value="suggest">
+    <input type="hidden" name="shop" value="new">
+    <h3>Suggest a shop</h3>
+    <p>We only list shops that say they're women owned themselves, so a link to where they said it helps.</p>
+    <p class="hp"><label>Leave this empty <input name="company"></label></p>
+    <label for="s-shop">Shop and town</label><input id="s-shop" name="suggestion" required>
+    <label for="s-link">Their Instagram or website</label><input id="s-link" name="link">
+    <div class="row"><button type="button" class="btn" data-close>Cancel</button><button class="btn solid" type="submit">Send suggestion</button></div>
+  </form>
+  <div id="dlg-done" class="done" hidden>
+    <h3 id="done-title">Sent</h3>
+    <p id="done-text"></p>
+    <div class="row"><button type="button" class="btn solid" data-close>Close</button></div>
+  </div>
+</dialog>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script>
+const SHOPS = {{ shops_json }};
+const DONE = {
+  claim: ["Claim sent", "Thank you! Look out for a message to the shop's Instagram or an email from Jess to confirm it's you. Then she'll send your InINK link."],
+  fix: ["Fix sent", "Thank you! Once we've confirmed it's you, we'll make the change."],
+  remove: ["Removal sent", "Thank you. Once we've confirmed it's the shop, your listing comes down."],
+  addflash: ["Flash day sent", "Thank you! Once we've confirmed it's you, we'll add it to your listing."],
+  addlisting: ["Listing sent", "Thank you! We'll check it and add it."],
+  artist: ["You're signed up", "Thank you! We'll let you know when the list of women who tattoo is live."],
+  suggest: ["Suggestion sent", "Thank you! We'll check it and add the shop if they say they're women owned."]
+};
+const bySlug = Object.fromEntries(SHOPS.map(s => [s.slug, s]));
+const pad = n => String(n).padStart(2, '0');
+const isoDay = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const TODAY = isoDay(new Date());
+const WEEK_END = isoDay(new Date(Date.now() + 6 * 864e5));
+document.querySelectorAll('[data-end]').forEach(el => { if (el.dataset.end < TODAY) el.remove(); });
+document.querySelectorAll('.fdays').forEach(b => { if (!b.querySelector('.fday')) b.remove(); });
+const weekBox = document.getElementById('this-week');
+if (weekBox && !weekBox.querySelector('.wk')) weekBox.querySelector('ol').outerHTML = '<p class="sub">No flash days listed for the next 7 days yet.</p>';
+const fdSoon = Object.fromEntries(SHOPS.map(s => [s.slug, s.fd.some(([a, b]) => b >= TODAY && a <= WEEK_END)]));
+const cards = [...document.querySelectorAll('.shop')];
+const markers = {};
+let map = null;
+let active = null;
+
+function setActive(slug, fly) {
+  if (active) {
+    document.getElementById(active)?.classList.remove('on');
+    markers[active]?.getElement().classList.remove('on');
+  }
+  active = slug;
+  const card = document.getElementById(slug);
+  card.classList.add('on');
+  const m = markers[slug];
+  if (m) {
+    m.getElement().classList.add('on');
+    if (fly && map) map.flyTo({ center: m.getLngLat(), zoom: Math.max(map.getZoom(), 11) });
+  }
+}
+
+try {
+  map = new maplibregl.Map({
+    container: 'map',
+    style: 'https://tiles.openfreemap.org/styles/positron',
+    bounds: {{ R.bounds }},
+    fitBoundsOptions: { padding: 24 },
+    attributionControl: { compact: true }
+  });
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+  SHOPS.forEach(s => {
+    const el = document.createElement('button');
+    el.type = 'button';
+    el.className = fdSoon[s.slug] ? 'pin fd' : 'pin';
+    el.setAttribute('aria-label', s.shop_name + ', ' + s.city);
+    el.addEventListener('click', () => {
+      setActive(s.slug, false);
+      document.getElementById(s.slug).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    markers[s.slug] = new maplibregl.Marker({ element: el }).setLngLat([s.lng, s.lat]).addTo(map);
+  });
+} catch (e) {
+  document.getElementById('map').innerHTML = '<p style="padding:16px">The map could not load. The full list is below.</p>';
+}
+
+document.querySelectorAll('.show-on-map-week').forEach(b => b.addEventListener('click', () => {
+  const slug = b.closest('.wk').dataset.slug;
+  setActive(slug, true);
+  document.getElementById(slug).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}));
+let here = null;
+const miles = (a, b) => {
+  const r = x => x * Math.PI / 180, R = 3958.8;
+  const dLat = r(b[0] - a[0]), dLng = r(b[1] - a[1]);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(r(a[0])) * Math.cos(r(b[0])) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+};
+const radiusSel = [...document.querySelectorAll('.near-radius')];
+function distOf(slug) { const s = bySlug[slug]; return here ? miles(here, [s.lat, s.lng]) : null; }
+function applyNear() {
+  const rad = Number(radiusSel[0] ? radiusSel[0].value : 0) || Infinity;
+  document.querySelectorAll('[data-slug] .dist').forEach(el => {
+    const d = distOf(el.closest('[data-slug]').dataset.slug);
+    el.textContent = d == null ? '' : ' (' + Math.round(d) + ' mi)';
+  });
+  const wk = document.querySelector('#this-week ol');
+  if (wk && here) {
+    const items = [...wk.querySelectorAll('.wk')];
+    items.sort((a, b) => distOf(a.dataset.slug) - distOf(b.dataset.slug)).forEach(li => {
+      li.hidden = distOf(li.dataset.slug) > rad; wk.appendChild(li);
+    });
+  }
+  const list = document.getElementById('shops');
+  if (here) cards.sort((a, b) => distOf(a.dataset.slug) - distOf(b.dataset.slug)).forEach(c => list.appendChild(c));
+  applyFilters();
+}
+document.querySelectorAll('.near-btn').forEach(b => b.addEventListener('click', () => {
+  const msgs = document.querySelectorAll('.near-msg');
+  if (!navigator.geolocation) { msgs.forEach(m => m.textContent = 'Your browser can\'t share location. Pick a {{ R.unit }} instead.'); return; }
+  msgs.forEach(m => m.textContent = 'Finding you...');
+  navigator.geolocation.getCurrentPosition(pos => {
+    here = [pos.coords.latitude, pos.coords.longitude];
+    document.querySelectorAll('.near-btn').forEach(x => x.setAttribute('aria-pressed', 'true'));
+    msgs.forEach(m => m.textContent = 'Sorted by distance. Your location stays on your phone.');
+    if (map) map.flyTo({ center: [here[1], here[0]], zoom: 8 });
+    applyNear();
+  }, () => msgs.forEach(m => m.textContent = 'Location is off. Pick a {{ R.unit }} instead.'), { maximumAge: 600000, timeout: 10000 });
+}));
+radiusSel.forEach(s => s.addEventListener('change', () => { radiusSel.forEach(o => { o.value = s.value; }); applyNear(); }));
+cards.forEach(c => {
+  c.querySelector('.show-on-map').addEventListener('click', () => {
+    setActive(c.dataset.slug, true);
+    document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+});
+
+const statesOn = new Set();
+const specsOn = new Set();
+function ddLabel(dd, set, inputs) {
+  const v = dd.querySelector('.dd-val');
+  if (!set.size) { v.textContent = v.dataset.all; return; }
+  const names = inputs.filter(i => i.checked).map(i => i.dataset.label);
+  v.textContent = names.length === 1 ? names[0] : names.length + ' picked';
+}
+function fitToShown() {
+  if (!map) return;
+  const pts = SHOPS.filter(s => (!statesOn.size || statesOn.has(s.state)));
+  if (!pts.length) return;
+  const bb = new maplibregl.LngLatBounds();
+  pts.forEach(s => bb.extend([s.lng, s.lat]));
+  map.fitBounds(bb, { padding: 48, maxZoom: 11 });
+}
+[['dd-state', '.f-state', statesOn], ['dd-style', '.f-spec', specsOn]].forEach(([id, sel, set]) => {
+  const dd = document.getElementById(id);
+  if (!dd) return;
+  const inputs = [...dd.querySelectorAll(sel)];
+  inputs.forEach(i => i.addEventListener('change', () => {
+    i.checked ? set.add(i.value) : set.delete(i.value);
+    ddLabel(dd, set, inputs);
+    applyFilters();
+    if (id === 'dd-state') fitToShown();
+  }));
+  dd.querySelector('.dd-clear').addEventListener('click', () => {
+    inputs.forEach(i => { i.checked = false; });
+    set.clear();
+    ddLabel(dd, set, inputs);
+    applyFilters();
+    if (id === 'dd-state') fitToShown();
+  });
+});
+document.addEventListener('click', e => {
+  document.querySelectorAll('.dd[open]').forEach(d => { if (!d.contains(e.target)) d.open = false; });
+});
+const q = document.getElementById('q');
+const fFlash = document.getElementById('f-flash');
+const fMom = document.getElementById('f-mom');
+const fInink = document.getElementById('f-inink');
+const fFd = document.getElementById('f-fd');
+function applyFilters() {
+  const term = q.value.trim().toLowerCase();
+  let shown = 0;
+  cards.forEach(c => {
+    const ok = (!statesOn.size || statesOn.has(c.dataset.state))
+      && (!term || c.dataset.text.includes(term))
+      && (!specsOn.size || [...specsOn].some(k => c.dataset.spec.split(' ').includes(k)))
+      && (!fFlash || !fFlash.checked || c.dataset.flash === '1')
+      && (!fMom || !fMom.checked || c.dataset.mom === '1')
+      && (!fInink || !fInink.checked || c.dataset.inink === '1')
+      && (!fFd || !fFd.checked || fdSoon[c.dataset.slug])
+      && (!here || !(Number(radiusSel[0] && radiusSel[0].value) > 0) || distOf(c.dataset.slug) <= Number(radiusSel[0].value));
+    c.hidden = !ok;
+    const m = markers[c.dataset.slug];
+    if (m) m.getElement().style.display = ok ? '' : 'none';
+    if (ok) shown++;
+  });
+  document.getElementById('count').textContent = shown === 1 ? '1 shop' : shown + ' shops';
+  document.getElementById('empty').hidden = shown !== 0;
+}
+[q, fFlash, fMom, fInink, fFd].forEach(el => el && el.addEventListener('input', applyFilters));
+
+const dlg = document.getElementById('dlg');
+const done = document.getElementById('dlg-done');
+function openForm(kind, slug) {
+  dlg.querySelectorAll('form').forEach(f => { f.hidden = f.dataset.kind !== kind; });
+  done.hidden = true;
+  const f = dlg.querySelector('form[data-kind="' + kind + '"]');
+  f.reset();
+  if (slug) f.querySelector('input[name="shop"]').value = bySlug[slug].shop_name + ' (' + bySlug[slug].city + ', ' + bySlug[slug].region + ')';
+  dlg.showModal();
+}
+document.querySelectorAll('[data-form]').forEach(b => b.addEventListener('click', () => {
+  const card = b.closest('.shop');
+  openForm(b.dataset.form, card ? card.dataset.slug : null);
+}));
+dlg.addEventListener('click', e => { if (e.target.closest('[data-close]')) dlg.close(); });
+document.querySelectorAll('form[data-inline]').forEach(f => f.addEventListener('submit', async e => {
+  e.preventDefault();
+  try {
+    const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(f)).toString() });
+    if (!res.ok) throw new Error(res.status);
+    f.outerHTML = '<p class="sub">You are on the list for flash days. You can unsubscribe anytime.</p>';
+  } catch (err) { alert('That did not send. Please try again.'); }
+}));
+dlg.querySelectorAll('form').forEach(f => f.addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = f.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  try {
+    const res = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(f)).toString()
+    });
+    if (!res.ok) throw new Error(res.status);
+    f.hidden = true;
+    document.getElementById('done-title').textContent = DONE[f.dataset.kind][0];
+    document.getElementById('done-text').textContent = DONE[f.dataset.kind][1];
+    done.hidden = false;
+  } catch (err) {
+    alert('That did not send. Please try again, or email jess@ininktattoobooking.com.');
+  } finally {
+    btn.disabled = false;
+  }
+}));
+</script>
+</body>
+</html>
