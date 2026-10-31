@@ -241,6 +241,7 @@ def main():
         if f.get("post_url"):
             ev["url"] = f["post_url"]
         events.append(ev)
+    (OUT / "inink.html").write_text(env.get_template("inink.html").render(base_css=Markup(base_css)))
     (OUT / "about.html").write_text(env.get_template("about.html").render(
         base_css=Markup(base_css), updated=fmt_date(datetime.date.today().isoformat())))
     (OUT / "flash-days.html").write_text(env.get_template("flash-days.html").render(
@@ -255,7 +256,7 @@ def main():
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         "<url><loc>https://womeninink.com/</loc></url>\n<url><loc>https://womeninink.com/uk.html</loc></url>\n"
         "<url><loc>https://womeninink.com/flash-days.html</loc></url>\n"
-        "<url><loc>https://womeninink.com/about.html</loc></url>\n</urlset>\n")
+        "<url><loc>https://womeninink.com/about.html</loc></url>\n<url><loc>https://womeninink.com/inink.html</loc></url>\n</urlset>\n")
     shops = all_shops
     print(f"built {len(shops)} listings into {OUT}")
 

@@ -141,6 +141,8 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
 .dd-opt small { display: block; font-size: 12px; color: var(--soft); }
 .dd-group { font-size: 12px; font-weight: 600; color: var(--purple); margin: 8px 0 2px; }
 .dd-clear { font: inherit; font-size: 13px; background: none; border: 0; color: var(--purple); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 6px 0 0; }
+.sooner { margin: -14px 0 22px; font-size: 16px; }
+.linkbtn { font: inherit; font-weight: 600; background: none; border: 0; padding: 0; color: var(--purple); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 </style>
 <script type="application/ld+json">{{ jsonld }}</script>
 <!-- Cloudflare Web Analytics: paste the one line snippet from Cloudflare here -->
@@ -149,12 +151,13 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
 <div class="wrap">
   <header class="site-head">
     <a class="lockup" href="/"><span class="name">Women in INK</span><span class="tag">a map of women who tattoo</span></a>
-    <nav><a href="/flash-days.html">Flash days</a><a href="/about.html">How listings work</a></nav>
+    <nav><a href="/flash-days.html">Flash days</a><a href="/about.html">How listings work</a><a href="/inink.html">About InINK</a></nav>
   </header>
 
   <nav class="regions" aria-label="Choose a region">{% for x in regions %}<a href="{{ x.href }}"{% if x.key == R.key %} aria-current="page"{% endif %}>{{ x.tab }}</a>{% endfor %}</nav>
   <h1>{{ R.h1 }}</h1>
-  <p class="lede">{{ R.lede }}</p>
+  <p class="lede">{{ R.lede }}{% if R.key == 'us' %} We're adding 2 new states every week.{% endif %}</p>
+  {% if R.key == 'us' %}<p class="sooner">Shop that wants to be added sooner? <button type="button" class="linkbtn" data-form="addlisting">Click here</button></p>{% endif %}
 
   {% if week %}
   <section class="week" id="this-week" aria-labelledby="week-title">
@@ -340,7 +343,7 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
     <input type="hidden" name="form-name" value="addlisting">
     <input type="hidden" name="shop" value="new">
     <h3>Add your listing</h3>
-    <p>For women owned shops and private studios in the Northeast US (New England, New York and New Jersey) and the UK. We'll check it and add it.</p>
+    <p>For women owned tattoo shops and private studios anywhere in the US or the UK. We'll check it and add your shop.</p>
     <p class="hp"><label>Leave this empty <input name="company"></label></p>
     <label for="l-shop">Shop name</label><input id="l-shop" name="shop_name" required>
     <label for="l-town">{{ R.town_label }}</label><input id="l-town" name="town" required placeholder="{{ R.town_eg }}">
