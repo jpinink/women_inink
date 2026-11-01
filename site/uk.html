@@ -214,7 +214,32 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
   
 
   
-  <p class="week-none"><a href="/flash-days.html">See upcoming flash days</a></p>
+  <section class="week" id="this-week" aria-labelledby="week-title">
+    <h2 id="week-title">Flash days this week</h2>
+    <p class="sub"><a href="/flash-days.html">See all upcoming flash days</a></p>
+    <div class="near"><button type="button" class="chip near-btn">Near me</button>
+      <label>Within <select class="near-radius" aria-label="Distance"><option value="">any distance</option><option value="10">10 miles</option><option value="25">25 miles</option><option value="50" selected>50 miles</option><option value="100">100 miles</option></select></label>
+      <span class="why near-msg">Your location stays on your phone.</span></div>
+    <ol>
+    
+      <li class="wk" data-end="2026-11-07" data-slug="latex-heart-tattoo-london">
+        <div class="when">Sat Nov 7<span class="dist"></span></div>
+        
+        <div class="who"><button type="button" class="show-on-map-week">Latex Heart Tattoo</button></div>
+        <div class="what">London, England. Flash day deals, walk ins. Walk in on the day.</div>
+        
+        <a href="https://www.instagram.com/lucyorbarker/p/De96KRFMAdi/" rel="noopener" target="_blank">See their post</a>
+      </li>
+    
+    </ol>
+    <form name="flash-email" method="POST" data-netlify="true" netlify-honeypot="company" class="signup" data-inline="1">
+      <input type="hidden" name="form-name" value="flash-email">
+      <p class="hp"><label>Leave this empty <input name="company"></label></p>
+      <label class="hp" for="fe-email">Email</label>
+      <input id="fe-email" name="email" type="email" required placeholder="Get flash days by email" autocomplete="email">
+      <button class="btn solid" type="submit">Sign me up</button>
+    </form>
+  </section>
   
 
   <div class="layout">
