@@ -113,6 +113,7 @@ dialog textarea { min-height: 90px; }
 .near { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 14px; margin: 0 0 10px; }
 .near select { font: inherit; font-size: 14px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
 .near .why { color: var(--soft); font-size: 13px; }
+.badge.claimed { margin: 0 0 0 8px; background: var(--purple); color: var(--paper); }
 .mom { font-size: 14px; margin: 0 0 10px; }
 .mom q { font-family: var(--serif); font-style: italic; color: var(--purple); }
 .regions { display: flex; gap: 6px; margin: 10px 0 0; }
@@ -228,7 +229,7 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
       {% for s in shops %}
         <li class="shop" id="{{ s.slug }}" data-slug="{{ s.slug }}" data-state="{{ s.state }}" data-spec="{{ s.spec_keys }}" data-flash="{{ 1 if s.books_flash == 'yes' else 0 }}" data-mom="{{ 1 if s.mom_owned else 0 }}" data-inink="{{ 1 if s.inink_url else 0 }}" data-text="{{ s.search_text }}">
           <h2><button type="button" class="show-on-map">{{ s.shop_name }}</button></h2>
-          <p class="place">{{ s.city }}, {{ s.place_region }}<span class="dist"></span></p>
+          <p class="place">{{ s.city }}, {{ s.place_region }}<span class="dist"></span>{% if s.claimed %}<span class="badge claimed">Claimed by the shop</span>{% endif %}</p>
           <p class="tagline"><a href="{{ s.source_url }}" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a>{% for x in s.tagline_rest %}<span>{{ x }}</span>{% endfor %}</p>
           {% if s.tags %}<ul class="specs" aria-label="Styles">{% for x in s.tags %}<li title="{{ x.hint }}">{{ x.label }}</li>{% endfor %}</ul>{% endif %}
           {% if s.inink_url %}<p class="source on-inink">On InINK: <a href="{{ s.inink_url }}" rel="noopener" target="_blank">see their flash and book</a>.</p>{% endif %}
@@ -248,7 +249,7 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
             <summary>Is this your shop?</summary>
             <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
             <div class="owner-btns">
-              <button type="button" data-form="claim">Claim this listing</button>
+              {% if not s.claimed %}<button type="button" data-form="claim">Claim this listing</button>{% endif %}
               <button type="button" data-form="addflash">Add a flash day</button>
               <button type="button" data-form="fix">Fix something</button>
               <button type="button" data-form="remove">Remove my listing</button>

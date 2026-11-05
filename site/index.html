@@ -167,6 +167,7 @@ dialog textarea { min-height: 90px; }
 .near { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 14px; margin: 0 0 10px; }
 .near select { font: inherit; font-size: 14px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
 .near .why { color: var(--soft); font-size: 13px; }
+.badge.claimed { margin: 0 0 0 8px; background: var(--purple); color: var(--paper); }
 .mom { font-size: 14px; margin: 0 0 10px; }
 .mom q { font-family: var(--serif); font-style: italic; color: var(--purple); }
 .regions { display: flex; gap: 6px; margin: 10px 0 0; }
@@ -266,6 +267,7 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
       <input id="q" class="search" type="search" placeholder="Search by shop, town or style" aria-label="Search by shop, town or style">
       <div class="toggles">
         <label><input type="checkbox" id="f-flash"> Has flash</label>
+        <label><input type="checkbox" id="f-mom"> Mom owned</label>
         
         <label><input type="checkbox" id="f-inink"> Book flash on InINK</label>
         <label><input type="checkbox" id="f-fd"> Flash day this week</label>
@@ -977,10 +979,13 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
           </details>
         </li>
       
-        <li class="shop" id="tattoos-by-tiaralyssa-springfield" data-slug="tattoos-by-tiaralyssa-springfield" data-state="MA" data-spec="" data-flash="1" data-mom="0" data-inink="0" data-text="tattoos by tiaralyssa springfield ma ">
+        <li class="shop" id="tattoos-by-tiaralyssa-springfield" data-slug="tattoos-by-tiaralyssa-springfield" data-state="MA" data-spec="" data-flash="1" data-mom="1" data-inink="0" data-text="tattoos by tiaralyssa springfield ma ">
           <h2><button type="button" class="show-on-map">Tattoos by Tiaralyssa</button></h2>
-          <p class="place">Springfield, MA<span class="dist"></span></p>
+          <p class="place">Springfield, MA<span class="dist"></span><span class="badge claimed">Claimed by the shop</span></p>
           <p class="tagline"><a href="https://mychoice.ink/studios/" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books by DM</span><span>Has flash</span></p>
+          
+          
+          <p class="mom"><span class="badge">Mom owned</span><q>Safe space for LGBTQQIA+, mom to my favorite human ever, tattooing since 2009!</q></p>
           
           
           
@@ -994,7 +999,7 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
             <summary>Is this your shop?</summary>
             <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
             <div class="owner-btns">
-              <button type="button" data-form="claim">Claim this listing</button>
+              
               <button type="button" data-form="addflash">Add a flash day</button>
               <button type="button" data-form="fix">Fix something</button>
               <button type="button" data-form="remove">Remove my listing</button>

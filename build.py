@@ -163,6 +163,7 @@ def main():
         s.setdefault("inink_url", "")
         s.setdefault("mom_owned", False)
         s.setdefault("mom_note", "")
+        s.setdefault("claimed", False)
         s["fd"] = prep_flash_days(s, TODAY)
         s["country"] = "UK" if s["state"] in UK_CODES else "US"
         s["place_region"] = dict(STATES).get(s["state"], s["state"]) if s["country"] == "UK" else s["state"]
