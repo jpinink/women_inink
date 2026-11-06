@@ -1,14 +1,15 @@
 # Women in INK
 
-The site at womeninink.com: a map of women owned tattoo shops (Northeast US and UK), made by InINK.
+The site at womeninink.com: a map of women owned tattoo shops (US and UK), made by InINK.
 
 ## How it's built
-- `build.py` reads shop records from the InINK HQ prospect database (exported to `hq/prospects`, not committed) and writes the finished site into `site/`.
+- `data/shops.json` holds the public map fields for every shop. A shop shows when its `status` is `live`.
+- `build.py` reads that file and writes the finished site into `site/`.
 - `templates/` holds the page templates and styles.
 - `site/` is what Netlify publishes (see `netlify.toml`). There is no build step on Netlify.
 
 ## Update the site
-1. Export the HQ `prospects` collection to `hq/prospects`.
+1. Edit `data/shops.json` (the weekly sweep keeps it in step with the HQ prospect records).
 2. Run `python3 build.py` (needs Jinja2).
 3. Commit and push. Netlify deploys `site/` on its own.
 

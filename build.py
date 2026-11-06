@@ -1,24 +1,23 @@
-"""Build the Women in INK static site from data/listings.json into site/."""
+"""Build the Women in INK static site from data/shops.json into site/."""
 import json, re, math, datetime, pathlib, collections
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 ROOT = pathlib.Path(__file__).parent
 OUT = ROOT / "site"
-import os
-HQ_DIR = pathlib.Path(os.environ.get("HQ_DIR", str(ROOT / "hq" / "prospects")))
+DATA = ROOT / "data" / "shops.json"
 STATES = [("CT", "Connecticut"), ("ME", "Maine"), ("MA", "Massachusetts"),
           ("NH", "New Hampshire"), ("NJ", "New Jersey"), ("NY", "New York"),
-          ("RI", "Rhode Island"), ("VT", "Vermont"),
+          ("RI", "Rhode Island"), ("VT", "Vermont"), ("GA", "Georgia"), ("VA", "Virginia"),
           ("ENG", "England"), ("SCT", "Scotland"), ("WLS", "Wales"), ("NIR", "Northern Ireland")]
 UK_CODES = {"ENG", "SCT", "WLS", "NIR"}
 REGIONS = [
-    {"key": "us", "tab": "Northeast US", "href": "/", "path": "/", "file": "index.html", "lang": "en",
-     "title": "Women Owned Tattoo Shops in the Northeast | Women in INK",
-     "h1": "Women owned tattoo shops in the Northeast",
-     "lede": "Find a women owned tattoo shop near you in New England, New York and New Jersey. See their work, catch their flash days and book your next tattoo.",
-     "area_long": "the Northeast (New England, New York and New Jersey)",
+    {"key": "us", "tab": "US", "href": "/", "path": "/", "file": "index.html", "lang": "en",
+     "title": "Women Owned Tattoo Shops in the US | Women in INK",
+     "h1": "Women owned tattoo shops in the US",
+     "lede": "Find a women owned tattoo shop near you in New England, New York, New Jersey, Georgia and Virginia. See their work, catch their flash days and book your next tattoo.",
+     "area_long": "the US (New England, New York, New Jersey, Georgia and Virginia)",
      "filter_label": "Filter by state", "unit": "state", "town_label": "Town and state", "town_eg": "Portland, ME",
-     "bounds": "[[-79.8, 38.9], [-66.9, 47.5]]", "country": "US"},
+     "bounds": "[[-85.7, 30.3], [-66.9, 47.5]]", "country": "US"},
     {"key": "uk", "tab": "UK", "href": "/uk.html", "path": "/uk.html", "file": "uk.html", "lang": "en-GB",
      "title": "Women Owned Tattoo Shops in the UK | Women in INK",
      "h1": "Women owned tattoo shops in the UK",
@@ -118,23 +117,21 @@ TODAY = datetime.date.today()
 
 
 def main():
-    # The one source of truth is the HQ prospect database (collection "prospects").
-    # Export it first (ArtifactData list with out_dir), then point HQ_DIR at that folder.
+    # data/shops.json holds every shop's public map fields. The weekly sweep keeps it in step
+    # with the HQ prospect records. A shop is on the map when its status is "live".
     shops = []
-    for f in sorted(HQ_DIR.glob("*.json")):
-        for rec in json.loads(f.read_text()).get("records", {}).values():
-            m = rec.get("map")
-            if not m or m.get("status") != "live":
-                continue
-            s = dict(m)
-            s["shop_name"] = m["name"]
-            s["flash_days"] = rec.get("flash_days", []) or []
-            shops.append(s)
-    # spread pins that share a town so they don't sit on top of each other
-    by_town = collections.defaultdict(list)
+    for m in json.loads(DATA.read_text()):
+        if m.get("status") != "live":
+            continue
+        s = dict(m)
+        s["shop_name"] = m["name"]
+        s["flash_days"] = m.get("flash_days", []) or []
+        shops.append(s)
+    # spread pins that sit on exactly the same spot so they don't cover each other
+    by_spot = collections.defaultdict(list)
     for s in shops:
-        by_town[(s["city"], s["state"])].append(s)
-    for group in by_town.values():
+        by_spot[(s["lat"], s["lng"])].append(s)
+    for group in by_spot.values():
         if len(group) > 1:
             for i, s in enumerate(group):
                 ang = 2 * math.pi * i / len(group)
