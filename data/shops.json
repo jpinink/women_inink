@@ -3585,5 +3585,28 @@
   "mom_note": "",
   "claimed": false,
   "flash_days": []
+ },
+ {
+  "name": "Lux Tattoo Studio",
+  "city": "Prestwich",
+  "state": "ENG",
+  "lat": 53.5333,
+  "lng": -2.2836,
+  "status": "live",
+  "source_url": "https://www.instagram.com/el.dot/",
+  "source_type": "website",
+  "checked_on": "2026-11-10",
+  "booking_method": "dm",
+  "books_flash": "yes",
+  "specialties": [
+   "Blackwork"
+  ],
+  "instagram_url": "https://www.instagram.com/luxtattoomcr/",
+  "website": "",
+  "inink_url": "",
+  "mom_owned": false,
+  "mom_note": "",
+  "claimed": false,
+  "flash_days": []
  }
 ]
