@@ -215,7 +215,41 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
   <p class="sooner">Shop that wants to be added sooner? <button type="button" class="linkbtn" data-form="addlisting">Click here</button></p>
 
   
-  <p class="week-none"><a href="/flash-days.html">See upcoming flash days</a></p>
+  <section class="week" id="this-week" aria-labelledby="week-title">
+    <h2 id="week-title">Flash days this week</h2>
+    <p class="sub"><a href="/flash-days.html">See all upcoming flash days</a></p>
+    <div class="near"><button type="button" class="chip near-btn">Near me</button>
+      <label>Within <select class="near-radius" aria-label="Distance"><option value="">any distance</option><option value="10">10 miles</option><option value="25">25 miles</option><option value="50" selected>50 miles</option><option value="100">100 miles</option></select></label>
+      <span class="why near-msg">Your location stays on your phone.</span></div>
+    <ol>
+    
+      <li class="wk" data-end="2026-11-13" data-slug="neon-lady-tattoo-manchester">
+        <div class="when">Fri Nov 13<span class="dist"></span></div>
+        
+        <div class="who"><button type="button" class="show-on-map-week">Neon Lady Tattoo</button></div>
+        <div class="what">Manchester, NH. $100 flash, 2x2 inch, limit 2 per person, first come first served, 11am to 6pm. Walk in on the day.</div>
+        
+        <a href="https://www.neonladytattoo.com/events" rel="noopener" target="_blank">See their post</a>
+      </li>
+    
+      <li class="wk" data-end="2026-11-13" data-slug="victory-art-and-tattoo-little-falls">
+        <div class="when">Fri Nov 13<span class="dist"></span></div>
+        
+        <div class="who"><button type="button" class="show-on-map-week">Victory Art and Tattoo</button></div>
+        <div class="what">Little Falls, NJ. Tattoos from $31 plus $9 gratuity, pick a design inside, first come first served, sign up from 11am, cash only, 18+. Walk in on the day.</div>
+        
+        <a href="https://www.victoryartandtattoo.com/" rel="noopener" target="_blank">See their post</a>
+      </li>
+    
+    </ol>
+    <form name="flash-email" method="POST" data-netlify="true" netlify-honeypot="company" class="signup" data-inline="1">
+      <input type="hidden" name="form-name" value="flash-email">
+      <p class="hp"><label>Leave this empty <input name="company"></label></p>
+      <label class="hp" for="fe-email">Email</label>
+      <input id="fe-email" name="email" type="email" required placeholder="Get flash days by email" autocomplete="email">
+      <button class="btn solid" type="submit">Sign me up</button>
+    </form>
+  </section>
   
 
   <div class="layout">
@@ -1055,13 +1089,13 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
           </details>
         </li>
       
-        <li class="shop" id="highly-natural-ink-wilbraham" data-slug="highly-natural-ink-wilbraham" data-state="MA" data-spec="fine drawn" data-flash="0" data-mom="0" data-inink="0" data-text="highly natural ink wilbraham ma  delicate lines drawn, like an illustration">
+        <li class="shop" id="highly-natural-ink-wilbraham" data-slug="highly-natural-ink-wilbraham" data-state="MA" data-spec="fine drawn" data-flash="0" data-mom="1" data-inink="0" data-text="highly natural ink wilbraham ma  delicate lines drawn, like an illustration">
           <h2><button type="button" class="show-on-map">Highly Natural Ink</button></h2>
-          <p class="place">Wilbraham, MA<span class="dist"></span></p>
+          <p class="place">Wilbraham, MA<span class="dist"></span><span class="badge claimed">Claimed by the shop</span></p>
           <p class="tagline"><a href="https://www.yelp.com/biz/highly-natural-ink-wilbraham" rel="nofollow noopener" target="_blank" title="Where they say it">Women owned</a><span>Books online</span></p>
           <ul class="specs" aria-label="Styles"><li title="Thin, soft linework. Light and subtle.">Delicate lines</li><li title="Looks like a drawing or a storybook picture.">Drawn, like an illustration</li></ul>
           
-          
+          <p class="mom"><span class="badge">Mom owned</span><q>25 Year Old Private Studio, Massachusetts Based Tattoo Artist</q></p>
           
           <div class="links">
             <a class="btn solid" href="https://www.instagram.com/highlynatural.ink" rel="noopener" target="_blank">See their work</a>
@@ -1072,7 +1106,7 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
             <summary>Is this your shop?</summary>
             <p class="owner-note">For the shop's owner and the artists who work there. We check it's really you before anything changes.</p>
             <div class="owner-btns">
-              <button type="button" data-form="claim">Claim this listing</button>
+              
               <button type="button" data-form="addflash">Add a flash day</button>
               <button type="button" data-form="fix">Fix something</button>
               <button type="button" data-form="remove">Remove my listing</button>

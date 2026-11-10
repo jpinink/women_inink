@@ -698,9 +698,9 @@
   "instagram_url": "https://www.instagram.com/highlynatural.ink",
   "website": "http://www.highlynatural.ink",
   "inink_url": "",
-  "mom_owned": false,
-  "mom_note": "",
-  "claimed": false,
+  "mom_owned": true,
+  "mom_note": "25 Year Old Private Studio, Massachusetts Based Tattoo Artist",
+  "claimed": true,
   "flash_days": []
  },
  {

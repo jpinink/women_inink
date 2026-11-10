@@ -215,36 +215,11 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
   
 
   
-  <section class="week" id="this-week" aria-labelledby="week-title">
-    <h2 id="week-title">Flash days this week</h2>
-    <p class="sub"><a href="/flash-days.html">See all upcoming flash days</a></p>
-    <div class="near"><button type="button" class="chip near-btn">Near me</button>
-      <label>Within <select class="near-radius" aria-label="Distance"><option value="">any distance</option><option value="10">10 miles</option><option value="25">25 miles</option><option value="50" selected>50 miles</option><option value="100">100 miles</option></select></label>
-      <span class="why near-msg">Your location stays on your phone.</span></div>
-    <ol>
-    
-      <li class="wk" data-end="2026-11-07" data-slug="latex-heart-tattoo-london">
-        <div class="when">Sat Nov 7<span class="dist"></span></div>
-        
-        <div class="who"><button type="button" class="show-on-map-week">Latex Heart Tattoo</button></div>
-        <div class="what">London, England. Flash day deals, walk ins. Walk in on the day.</div>
-        
-        <a href="https://www.instagram.com/lucyorbarker/p/De96KRFMAdi/" rel="noopener" target="_blank">See their post</a>
-      </li>
-    
-    </ol>
-    <form name="flash-email" method="POST" data-netlify="true" netlify-honeypot="company" class="signup" data-inline="1">
-      <input type="hidden" name="form-name" value="flash-email">
-      <p class="hp"><label>Leave this empty <input name="company"></label></p>
-      <label class="hp" for="fe-email">Email</label>
-      <input id="fe-email" name="email" type="email" required placeholder="Get flash days by email" autocomplete="email">
-      <button class="btn solid" type="submit">Sign me up</button>
-    </form>
-  </section>
+  <p class="week-none"><a href="/flash-days.html">See upcoming flash days</a></p>
   
 
   <div class="layout">
-    <div class="map-col"><div id="map" role="region" aria-label="Map of the shops"></div><p class="legend"><span>Shop</span><span class="lfd">Flash day this week</span></p></div>
+    <div class="map-col"><div id="map" role="region" aria-label="Map of the shops"></div></div>
 
     <div class="list-col">
       <div class="dropdowns">
@@ -285,7 +260,7 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
         <label><input type="checkbox" id="f-flash"> Has flash</label>
         
         
-        <label><input type="checkbox" id="f-fd"> Flash day this week</label>
+        
       </div>
       <div class="near"><button type="button" class="chip near-btn">Near me</button>
         <label>Within <select class="near-radius" aria-label="Distance"><option value="">any distance</option><option value="10">10 miles</option><option value="25">25 miles</option><option value="50" selected>50 miles</option><option value="100">100 miles</option></select></label>
@@ -626,12 +601,7 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
           <ul class="specs" aria-label="Styles"><li title="Thin, soft linework. Light and subtle.">Delicate lines</li><li title="Solid black ink and strong shapes.">Bold black</li><li title="Realistic portraits, animals and objects.">Looks like a photo</li><li title="Koi, dragons, waves and flowers in the Japanese tradition.">Japanese style</li></ul>
           
           
-          <div class="fdays">
-            <h3>Upcoming flash days</h3>
-            <p class="fday" data-end="2026-11-07"><span class="when">Sat Nov 7</span>: Flash day deals. Flash day deals, walk ins. Walk in on the day.<br>
-              <a href="https://www.instagram.com/lucyorbarker/p/De96KRFMAdi/" rel="noopener" target="_blank">See their post</a></p>
-            
-          </div>
+          
           <div class="links">
             <a class="btn solid" href="https://www.instagram.com/latexhearttattoo/" rel="noopener" target="_blank">See their work</a>
             
@@ -1008,7 +978,7 @@ blockquote a.q:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script>
-const SHOPS = [{"slug": "foxglove-and-fern-studio-accrington", "shop_name": "Foxglove and Fern Studio", "city": "Accrington", "state": "ENG", "lat": 53.7534, "lng": -2.3638, "region": "England", "fd": []}, {"slug": "secret-society-tattoo-collective-anstey", "shop_name": "Secret Society Tattoo Collective", "city": "Anstey", "state": "ENG", "lat": 52.673, "lng": -1.189, "region": "England", "fd": []}, {"slug": "outliers-ink-birmingham", "shop_name": "Outliers Ink", "city": "Birmingham", "state": "ENG", "lat": 52.478, "lng": -1.969, "region": "England", "fd": []}, {"slug": "studio-baby-brighton", "shop_name": "Studio Baby", "city": "Brighton", "state": "ENG", "lat": 50.827, "lng": -0.132, "region": "England", "fd": []}, {"slug": "the-dollhouse-brighton", "shop_name": "The Dollhouse", "city": "Brighton", "state": "ENG", "lat": 50.822, "lng": -0.14300000000000002, "region": "England", "fd": []}, {"slug": "black-sheep-tattoo-bristol", "shop_name": "Black Sheep Tattoo", "city": "Bristol", "state": "ENG", "lat": 51.465196152422706, "lng": -2.594, "region": "England", "fd": []}, {"slug": "envision-ink-bristol", "shop_name": "Envision Ink", "city": "Bristol", "state": "ENG", "lat": 51.46480384757729, "lng": -2.574, "region": "England", "fd": []}, {"slug": "forever-bound-tattoo-bristol", "shop_name": "Forever Bound Tattoo", "city": "Bristol", "state": "ENG", "lat": 51.465, "lng": -2.602, "region": "England", "fd": []}, {"slug": "fox-and-dagger-studios-cirencester", "shop_name": "Fox and Dagger Studios", "city": "Cirencester", "state": "ENG", "lat": 51.719, "lng": -1.968, "region": "England", "fd": []}, {"slug": "gilded-leopard-tattoo-leeds", "shop_name": "Gilded Leopard Tattoo", "city": "Leeds", "state": "ENG", "lat": 53.8008, "lng": -1.5411, "region": "England", "fd": []}, {"slug": "the-aviary-leeds", "shop_name": "The Aviary", "city": "Leeds", "state": "ENG", "lat": 53.819, "lng": -1.585, "region": "England", "fd": []}, {"slug": "hellcat-tattoo-liverpool", "shop_name": "Hellcat Tattoo", "city": "Liverpool", "state": "ENG", "lat": 53.372, "lng": -2.93, "region": "England", "fd": []}, {"slug": "deity-tattoo-london-london", "shop_name": "Deity Tattoo London", "city": "London", "state": "ENG", "lat": 51.47, "lng": -0.17600000000000002, "region": "England", "fd": []}, {"slug": "latex-heart-tattoo-london", "shop_name": "Latex Heart Tattoo", "city": "London", "state": "ENG", "lat": 51.545, "lng": -0.034, "region": "England", "fd": [["2026-11-07", "2026-11-07"]]}, {"slug": "okayspace-london", "shop_name": "OkaySpace", "city": "London", "state": "ENG", "lat": 51.517, "lng": -0.26, "region": "England", "fd": []}, {"slug": "soteria-studios-london", "shop_name": "Soteria Studios", "city": "London", "state": "ENG", "lat": 51.559, "lng": -0.099, "region": "England", "fd": []}, {"slug": "blind-tiger-tattoo-studio-north-shields", "shop_name": "Blind Tiger Tattoo Studio", "city": "North Shields", "state": "ENG", "lat": 55.009, "lng": -1.448, "region": "England", "fd": []}, {"slug": "belladonna-studio-norwich", "shop_name": "Belladonna Studio", "city": "Norwich", "state": "ENG", "lat": 52.6309, "lng": 1.3054000000000001, "region": "England", "fd": []}, {"slug": "new-leaf-tattoo-norwich", "shop_name": "New Leaf Tattoo", "city": "Norwich", "state": "ENG", "lat": 52.629, "lng": 1.285, "region": "England", "fd": []}, {"slug": "the-crypt-tattoo-studio-rochester", "shop_name": "The Crypt Tattoo Studio", "city": "Rochester", "state": "ENG", "lat": 51.388, "lng": 0.506, "region": "England", "fd": []}, {"slug": "let-me-ink-york", "shop_name": "Let Me Ink", "city": "York", "state": "ENG", "lat": 53.952, "lng": -1.08, "region": "England", "fd": []}, {"slug": "earl-grey-tattoo-studio-dundee", "shop_name": "Earl Grey Tattoo Studio", "city": "Dundee", "state": "SCT", "lat": 56.462, "lng": -2.9707, "region": "Scotland", "fd": []}, {"slug": "heaven-n-hell-tattoos-piercings-falkirk", "shop_name": "Heaven 'N' Hell Tattoos & Piercings", "city": "Falkirk", "state": "SCT", "lat": 56.0019, "lng": -3.7839, "region": "Scotland", "fd": []}];
+const SHOPS = [{"slug": "foxglove-and-fern-studio-accrington", "shop_name": "Foxglove and Fern Studio", "city": "Accrington", "state": "ENG", "lat": 53.7534, "lng": -2.3638, "region": "England", "fd": []}, {"slug": "secret-society-tattoo-collective-anstey", "shop_name": "Secret Society Tattoo Collective", "city": "Anstey", "state": "ENG", "lat": 52.673, "lng": -1.189, "region": "England", "fd": []}, {"slug": "outliers-ink-birmingham", "shop_name": "Outliers Ink", "city": "Birmingham", "state": "ENG", "lat": 52.478, "lng": -1.969, "region": "England", "fd": []}, {"slug": "studio-baby-brighton", "shop_name": "Studio Baby", "city": "Brighton", "state": "ENG", "lat": 50.827, "lng": -0.132, "region": "England", "fd": []}, {"slug": "the-dollhouse-brighton", "shop_name": "The Dollhouse", "city": "Brighton", "state": "ENG", "lat": 50.822, "lng": -0.14300000000000002, "region": "England", "fd": []}, {"slug": "black-sheep-tattoo-bristol", "shop_name": "Black Sheep Tattoo", "city": "Bristol", "state": "ENG", "lat": 51.465196152422706, "lng": -2.594, "region": "England", "fd": []}, {"slug": "envision-ink-bristol", "shop_name": "Envision Ink", "city": "Bristol", "state": "ENG", "lat": 51.46480384757729, "lng": -2.574, "region": "England", "fd": []}, {"slug": "forever-bound-tattoo-bristol", "shop_name": "Forever Bound Tattoo", "city": "Bristol", "state": "ENG", "lat": 51.465, "lng": -2.602, "region": "England", "fd": []}, {"slug": "fox-and-dagger-studios-cirencester", "shop_name": "Fox and Dagger Studios", "city": "Cirencester", "state": "ENG", "lat": 51.719, "lng": -1.968, "region": "England", "fd": []}, {"slug": "gilded-leopard-tattoo-leeds", "shop_name": "Gilded Leopard Tattoo", "city": "Leeds", "state": "ENG", "lat": 53.8008, "lng": -1.5411, "region": "England", "fd": []}, {"slug": "the-aviary-leeds", "shop_name": "The Aviary", "city": "Leeds", "state": "ENG", "lat": 53.819, "lng": -1.585, "region": "England", "fd": []}, {"slug": "hellcat-tattoo-liverpool", "shop_name": "Hellcat Tattoo", "city": "Liverpool", "state": "ENG", "lat": 53.372, "lng": -2.93, "region": "England", "fd": []}, {"slug": "deity-tattoo-london-london", "shop_name": "Deity Tattoo London", "city": "London", "state": "ENG", "lat": 51.47, "lng": -0.17600000000000002, "region": "England", "fd": []}, {"slug": "latex-heart-tattoo-london", "shop_name": "Latex Heart Tattoo", "city": "London", "state": "ENG", "lat": 51.545, "lng": -0.034, "region": "England", "fd": []}, {"slug": "okayspace-london", "shop_name": "OkaySpace", "city": "London", "state": "ENG", "lat": 51.517, "lng": -0.26, "region": "England", "fd": []}, {"slug": "soteria-studios-london", "shop_name": "Soteria Studios", "city": "London", "state": "ENG", "lat": 51.559, "lng": -0.099, "region": "England", "fd": []}, {"slug": "blind-tiger-tattoo-studio-north-shields", "shop_name": "Blind Tiger Tattoo Studio", "city": "North Shields", "state": "ENG", "lat": 55.009, "lng": -1.448, "region": "England", "fd": []}, {"slug": "belladonna-studio-norwich", "shop_name": "Belladonna Studio", "city": "Norwich", "state": "ENG", "lat": 52.6309, "lng": 1.3054000000000001, "region": "England", "fd": []}, {"slug": "new-leaf-tattoo-norwich", "shop_name": "New Leaf Tattoo", "city": "Norwich", "state": "ENG", "lat": 52.629, "lng": 1.285, "region": "England", "fd": []}, {"slug": "the-crypt-tattoo-studio-rochester", "shop_name": "The Crypt Tattoo Studio", "city": "Rochester", "state": "ENG", "lat": 51.388, "lng": 0.506, "region": "England", "fd": []}, {"slug": "let-me-ink-york", "shop_name": "Let Me Ink", "city": "York", "state": "ENG", "lat": 53.952, "lng": -1.08, "region": "England", "fd": []}, {"slug": "earl-grey-tattoo-studio-dundee", "shop_name": "Earl Grey Tattoo Studio", "city": "Dundee", "state": "SCT", "lat": 56.462, "lng": -2.9707, "region": "Scotland", "fd": []}, {"slug": "heaven-n-hell-tattoos-piercings-falkirk", "shop_name": "Heaven 'N' Hell Tattoos & Piercings", "city": "Falkirk", "state": "SCT", "lat": 56.0019, "lng": -3.7839, "region": "Scotland", "fd": []}];
 const DONE = {
   claim: ["Claim sent", "Thank you! Look out for a message to the shop's Instagram or an email from Jess to confirm it's you. Then she'll send your InINK link."],
   fix: ["Fix sent", "Thank you! Once we've confirmed it's you, we'll make the change."],
