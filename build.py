@@ -7,17 +7,18 @@ OUT = ROOT / "site"
 DATA = ROOT / "data" / "shops.json"
 STATES = [("CT", "Connecticut"), ("ME", "Maine"), ("MA", "Massachusetts"),
           ("NH", "New Hampshire"), ("NJ", "New Jersey"), ("NY", "New York"),
-          ("RI", "Rhode Island"), ("VT", "Vermont"), ("GA", "Georgia"), ("VA", "Virginia"),
+          ("RI", "Rhode Island"), ("VT", "Vermont"), ("GA", "Georgia"), ("PA", "Pennsylvania"), ("TX", "Texas"),
+          ("VA", "Virginia"),
           ("ENG", "England"), ("SCT", "Scotland"), ("WLS", "Wales"), ("NIR", "Northern Ireland")]
 UK_CODES = {"ENG", "SCT", "WLS", "NIR"}
 REGIONS = [
     {"key": "us", "tab": "US", "href": "/", "path": "/", "file": "index.html", "lang": "en",
      "title": "Women Owned Tattoo Shops in the US | Women in INK",
      "h1": "Women owned tattoo shops in the US",
-     "lede": "Find a women owned tattoo shop near you in New England, New York, New Jersey, Georgia and Virginia. See their work, catch their flash days and book your next tattoo.",
-     "area_long": "the US (New England, New York, New Jersey, Georgia and Virginia)",
+     "lede": "Find a women owned tattoo shop near you in New England, New York, New Jersey, Pennsylvania, Virginia, Georgia and Texas. See their work, catch their flash days and book your next tattoo.",
+     "area_long": "the US (New England, New York, New Jersey, Pennsylvania, Virginia, Georgia and Texas)",
      "filter_label": "Filter by state", "unit": "state", "town_label": "Town and state", "town_eg": "Portland, ME",
-     "bounds": "[[-85.7, 30.3], [-66.9, 47.5]]", "country": "US"},
+     "bounds": "[[-106.7, 25.8], [-66.9, 47.5]]", "country": "US"},
     {"key": "uk", "tab": "UK", "href": "/uk.html", "path": "/uk.html", "file": "uk.html", "lang": "en-GB",
      "title": "Women Owned Tattoo Shops in the UK | Women in INK",
      "h1": "Women owned tattoo shops in the UK",
