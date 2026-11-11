@@ -3608,5 +3608,29 @@
   "mom_note": "",
   "claimed": false,
   "flash_days": []
+ },
+ {
+  "name": "Heartfelt Tattoo Studio",
+  "city": "Southsea",
+  "state": "ENG",
+  "lat": 50.7864,
+  "lng": -1.0896,
+  "status": "live",
+  "source_url": "https://www.instagram.com/heartfelttattoostudio/",
+  "source_type": "instagram",
+  "checked_on": "2026-11-10",
+  "booking_method": "form",
+  "books_flash": "yes",
+  "specialties": [
+   "Realism",
+   "Color"
+  ],
+  "instagram_url": "https://www.instagram.com/heartfelttattoostudio/",
+  "website": "",
+  "inink_url": "",
+  "mom_owned": false,
+  "mom_note": "",
+  "claimed": false,
+  "flash_days": []
  }
 ]
