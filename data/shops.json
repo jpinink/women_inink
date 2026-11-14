@@ -4087,5 +4087,31 @@
   "mom_note": "",
   "claimed": false,
   "flash_days": []
+ },
+ {
+  "name": "Lair O' Lilith",
+  "city": "Ludlow",
+  "state": "MA",
+  "lat": 42.1601,
+  "lng": -72.4773,
+  "status": "live",
+  "source_url": "https://www.lairolilithllc.com/",
+  "source_type": "website",
+  "checked_on": "2026-11-14",
+  "booking_method": "online",
+  "books_flash": "yes",
+  "specialties": [
+   "Fine line",
+   "Blackwork",
+   "Color",
+   "Illustrative"
+  ],
+  "instagram_url": "https://www.instagram.com/lairolilith/",
+  "website": "https://www.lairolilithllc.com/",
+  "inink_url": "",
+  "mom_owned": false,
+  "mom_note": "",
+  "claimed": false,
+  "flash_days": []
  }
 ]
