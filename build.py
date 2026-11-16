@@ -10,16 +10,17 @@ STATES = [("CT", "Connecticut"), ("ME", "Maine"), ("MA", "Massachusetts"),
           ("RI", "Rhode Island"), ("VT", "Vermont"), ("GA", "Georgia"), ("PA", "Pennsylvania"), ("TX", "Texas"),
           ("MD", "Maryland"), ("DE", "Delaware"),
           ("VA", "Virginia"), ("NC", "North Carolina"), ("SC", "South Carolina"),
+          ("FL", "Florida"), ("AL", "Alabama"),
           ("ENG", "England"), ("SCT", "Scotland"), ("WLS", "Wales"), ("NIR", "Northern Ireland")]
 UK_CODES = {"ENG", "SCT", "WLS", "NIR"}
 REGIONS = [
     {"key": "us", "tab": "US", "href": "/", "path": "/", "file": "index.html", "lang": "en",
      "title": "Women Owned Tattoo Shops in the US | Women in INK",
      "h1": "Women owned tattoo shops in the US",
-     "lede": "Find a women owned tattoo shop near you in New England, New York, New Jersey, Pennsylvania, Delaware, Maryland, Virginia, North Carolina, South Carolina, Georgia and Texas. See their work, catch their flash days and book your next tattoo.",
-     "area_long": "the US (New England, New York, New Jersey, Pennsylvania, Delaware, Maryland, Virginia, North Carolina, South Carolina, Georgia and Texas)",
+     "lede": "Find a women owned tattoo shop near you in New England, New York, New Jersey, Pennsylvania, Delaware, Maryland, Virginia, North Carolina, South Carolina, Georgia, Florida, Alabama and Texas. See their work, catch their flash days and book your next tattoo.",
+     "area_long": "the US (New England, New York, New Jersey, Pennsylvania, Delaware, Maryland, Virginia, North Carolina, South Carolina, Georgia, Florida, Alabama and Texas)",
      "filter_label": "Filter by state", "unit": "state", "town_label": "Town and state", "town_eg": "Portland, ME",
-     "bounds": "[[-106.7, 25.8], [-66.9, 47.5]]", "country": "US"},
+     "bounds": "[[-106.7, 24.5], [-66.9, 47.5]]", "country": "US"},
     {"key": "uk", "tab": "UK", "href": "/uk.html", "path": "/uk.html", "file": "uk.html", "lang": "en-GB",
      "title": "Women Owned Tattoo Shops in the UK | Women in INK",
      "h1": "Women owned tattoo shops in the UK",
@@ -29,7 +30,7 @@ REGIONS = [
      "bounds": "[[-8.3, 49.9], [1.9, 58.8]]", "country": "UK"},
 ]
 SOURCE_LABEL = {"website": "website", "press": "interview", "directory": "listing page",
-                "linktree": "link page", "instagram": "Instagram", "yelp": "Yelp listing", "inink": "InINK page", "google": "Google listing"}
+                "linktree": "link page", "instagram": "Instagram", "yelp": "Yelp listing", "inink": "InINK page", "google": "Google listing", "facebook": "Facebook page"}
 BOOKING_TEXT = {"dm": "Books by DM", "form": "Books by form",
                 "phone": "Books by phone", "email": "Books by email",
                 "walk ins": "Walk ins welcome", "online": "Books online"}
