@@ -83,7 +83,7 @@ h1 { font-size: clamp(34px, 5.4vw, 60px); max-width: 14ch; }
 .near select, .near button { font: inherit; font-size: 14px; padding: 5px 10px; border: 1px solid var(--line); border-radius: 4px; background: #fff; cursor: pointer; }
 .dist { font-size: 13px; color: var(--soft); }
 </style>
-<script type="application/ld+json">{"@context": "https://schema.org", "@graph": []}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Event", "name": "Tiny Tuesday Snowfall Edition at Ink Euphoria", "startDate": "2026-12-08", "endDate": "2026-12-08", "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode", "location": {"@type": "Place", "name": "Ink Euphoria", "address": {"@type": "PostalAddress", "addressLocality": "Buffalo", "addressRegion": "NY", "addressCountry": "US"}}, "organizer": {"@type": "Organization", "name": "Ink Euphoria", "url": "https://www.inkeuphoria.com/"}, "description": "1 tiny tattoo $75, 2 for $100, 11am to 7pm", "url": "https://www.inkeuphoria.com/events"}]}</script>
 </head>
 <body>
 <div class="wrap">
@@ -93,7 +93,7 @@ h1 { font-size: clamp(34px, 5.4vw, 60px); max-width: 14ch; }
   </header>
   <main>
     <h1>Flash days at women owned shops</h1>
-    <p>Upcoming flash days in the US (New England, New York, New Jersey, Pennsylvania, Delaware, Maryland, Virginia, Georgia and Texas) and the UK, with what's on offer and how to sign up.</p>
+    <p>Upcoming flash days in the US (New England, New York, New Jersey, Pennsylvania, Delaware, Maryland, Virginia, North Carolina, South Carolina, Georgia and Texas) and the UK, with what's on offer and how to sign up.</p>
     <form name="flash-email" method="POST" data-netlify="true" netlify-honeypot="company" class="signup" id="signup">
       <input type="hidden" name="form-name" value="flash-email">
       <p class="hp"><label>Leave this empty <input name="company"></label></p>
@@ -107,8 +107,22 @@ h1 { font-size: clamp(34px, 5.4vw, 60px); max-width: 14ch; }
       <span class="note" id="near-msg">Your location stays on your phone.</span></div>
     <div id="days">
     
+      <section class="day" data-end="2026-12-08">
+        <h2>Tue Dec 8</h2>
+        
+        <div class="ev" data-end="2026-12-08" data-lat="42.8864" data-lng="-78.8704">
+          
+          <div class="who"><a href="/#ink-euphoria-buffalo" style="color:inherit;text-decoration:none;font-size:inherit;margin:0">Ink Euphoria</a></div>
+          <div class="what">Buffalo, NY<span class="dist"></span>. Tiny Tuesday Snowfall Edition. 1 tiny tattoo $75, 2 for $100, 11am to 7pm. Book through their link.</div>
+          <a href="https://www.inkeuphoria.com/bookwithus" rel="noopener" target="_blank">Sign up</a>
+          <a href="https://www.inkeuphoria.com/events" rel="noopener" target="_blank">See their post</a>
+          <a href="https://www.instagram.com/inkeuphoriatattoos" rel="noopener" target="_blank">See their work</a>
+        </div>
+        
+      </section>
+    
     </div>
-    <p class="note" id="none" >No flash days listed yet. Shops can add one from their listing on the map.</p>
+    <p class="note" id="none" hidden>No flash days listed yet. Shops can add one from their listing on the map.</p>
     <p class="note">Running a flash day at a women owned shop? Add it from your listing on <a href="/">the map</a>.</p>
   </main>
   <footer><p>Women in INK is made by InINK. <a href="/about.html">How listings work, privacy and terms</a></p></footer>
