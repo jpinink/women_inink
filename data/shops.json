@@ -5107,5 +5107,30 @@
   "mom_note": "",
   "claimed": false,
   "flash_days": []
+ },
+ {
+  "name": "Vellum Tattoo",
+  "city": "West Bridgford, Nottingham",
+  "state": "ENG",
+  "lat": 52.9306,
+  "lng": -1.127,
+  "status": "live",
+  "source_url": "https://www.vellumtattoo.co.uk/tara.html",
+  "source_type": "website",
+  "checked_on": "2026-11-18",
+  "booking_method": "dm",
+  "books_flash": "yes",
+  "specialties": [
+   "Traditional",
+   "Blackwork",
+   "Color"
+  ],
+  "instagram_url": "https://www.instagram.com/imtaratho/",
+  "website": "https://www.vellumtattoo.co.uk/",
+  "inink_url": "",
+  "mom_owned": false,
+  "mom_note": "",
+  "claimed": false,
+  "flash_days": []
  }
 ]
